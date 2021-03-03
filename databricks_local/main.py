@@ -1,16 +1,9 @@
-#!/usr/bin/env python
-
-"""Python script which compiles the library and deploys it via Databricks CLI to the
-Databricks file system of our live Databricks installation."""
 import os
-from loguru import logger as logging
 import fire
-import pytz
 
-from datetime import datetime
+from loguru import logger as logging
 
-
-class Cli:
+class DatabricksLocal:
     def __init__(self):
         pass
 
@@ -76,7 +69,5 @@ Great! in your notebook install the library by running:
         import subprocess
         return subprocess.check_output(cmd, shell=True).decode("utf-8")
 
-
-
-if __name__ == "__main__":
-    fire.Fire(Cli)
+def main():
+    fire.Fire(DatabricksLocal)

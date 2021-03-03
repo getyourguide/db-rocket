@@ -9,4 +9,9 @@ setuptools.setup(
     url="https://github.com/getyourguide/databricks-local",
     packages=setuptools.find_packages(),
     install_requires=["loguru", "fire"],
+    entry_points={
+        'console_scripts': [
+            'db_local=databricks_local.main:main'
+        ]
+    }
 )
