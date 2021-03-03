@@ -1,30 +1,55 @@
 import os
 import fire
+import sys
 
 from loguru import logger as logging
+import time
 
 class DatabricksLocal:
     def __init__(self):
         pass
 
-    def build_and_deploy(self, project_location: str, dbfs_folder: str):
+    def build_and_deploy(self, project_location: str, dbfs_folder: str, enable_watch=False):
         """
         :param project_location:
         :param dbfs_folder: path where the wheel will be stored, ex: dbfs:/tmp/myteam/myproject
         :return:
         """
+
         self.project_location = project_location
         self.dbfs_folder = dbfs_folder
 
+        if enable_watch:
+            return self._watch()
+
+        return self._build_and_deploy()
+
+    def _watch(self):
+        cmd = f"watchmedo shell-command -w -W --interval 3 --patterns='*.py' --ignore-pattern='*build*'" \
+              f" --recursive " \
+              f"--command='db_local " \
+              f"build_and_deploy " \
+              f"{self.project_location} {self.dbfs_folder}' {self.project_location}"
+        logging.info(f'watch command: {cmd}')
+        print(os.system(cmd))
+
+    def _send_notification(self, message):
+        os.system(f"notify-send '{message}'")
+
+    def _build_and_deploy(self):
+        logging.info("Starting to build")
         self._build()
-        return self._deploy()
+        result = self._deploy()
+        self._send_notification("Deploy finished successfully")
+        return result
+
 
     def _build(self):
         """ builds a library with that project"""
 
         dist_location = f"{self.project_location}/dist"
         #cleans up dist
-        self._execute(f"rm {dist_location}/*")
+        self._execute(f"rm {dist_location}/* || true")
 
         self._execute(f"cd {self.project_location} ; python setup.py bdist_wheel")
         self.wheel_file = self._execute(f"ls {dist_location} | head -n 1").replace("\n", "")

@@ -11,7 +11,7 @@ setuptools.setup(
     install_requires=["loguru", "fire"],
     entry_points={
         'console_scripts': [
-            'db_local=databricks_local.main:main'
+            'db_local=databricks_local.databricks_local:main'
         ]
     }
 )
