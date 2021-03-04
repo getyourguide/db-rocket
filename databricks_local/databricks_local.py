@@ -31,6 +31,9 @@ class DatabricksLocal:
     def _build(self):
         """ builds a library with that project"""
 
+        if not os.path.exists(f"{self.project_location}/setup.py"):
+            raise Exception("To be turned into a library your project has to contain a setup.py file")
+
         dist_location = f"{self.project_location}/dist"
         # cleans up dist
         self._shell(f"rm {dist_location}/* || true")
@@ -49,7 +52,7 @@ class DatabricksLocal:
         return f"""
 Great! in your notebook install the library by running: 
 
-%pip install {self.dbfs_folder}/{self.wheel_file}
+%pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall --no-deps
         """
 
     def _watch(self):
@@ -68,7 +71,7 @@ Great! in your notebook install the library by running:
         logging.info("Starting to build")
         self._build()
         result = self._deploy()
-        self._send_notification("Deploy finished successfully")
+        #self._send_notification("Deploy finished successfully")
         return result
 
 

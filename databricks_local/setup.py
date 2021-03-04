@@ -10,6 +10,14 @@ class Setup:
             "databricks-connect test",
         ], dry_run=True)
 
+    def setup_databricks_cli(self):
+        """
+        install databricks cli for full reference see:
+        https://docs.databricks.com/dev-tools/cli/index.html
+        """
+        raise Exception("TBD")
+
+
     @staticmethod
     def _execute_each(entries, dry_run=False) -> str:
         for entry in entries:
