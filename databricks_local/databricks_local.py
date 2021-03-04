@@ -1,13 +1,17 @@
 import os
 import fire
 import sys
+import subprocess
 
 from loguru import logger as logging
 import time
 
+from databricks_local.setup import Setup
+
+
 class DatabricksLocal:
     def __init__(self):
-        pass
+        self.setup = Setup
 
     def build_and_deploy(self, project_location: str, dbfs_folder: str, enable_watch=False):
         """
@@ -29,16 +33,16 @@ class DatabricksLocal:
 
         dist_location = f"{self.project_location}/dist"
         # cleans up dist
-        self._execute(f"rm {dist_location}/* || true")
+        self._shell(f"rm {dist_location}/* || true")
 
-        self._execute(f"cd {self.project_location} ; python setup.py bdist_wheel")
-        self.wheel_file = self._execute(f"ls {dist_location} | head -n 1").replace("\n", "")
+        self._shell(f"cd {self.project_location} ; python setup.py bdist_wheel")
+        self.wheel_file = self._shell(f"ls {dist_location} | head -n 1").replace("\n", "")
         self.wheel_path = f"{dist_location}/{self.wheel_file}"
         logging.info(f"Build Successful. Wheel: '{self.wheel_path}' ")
 
     def _deploy(self):
         """Deploys the version specified in config.yml"""
-        self._execute(
+        self._shell(
             f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
         )
 
@@ -68,17 +72,9 @@ Great! in your notebook install the library by running:
         return result
 
 
-    def _install_db_connect(self):
-        import os
-        os.system("pip uninstall pyspark; pip install 'databricks-connect==7.3.9' ")
-        #os.system("dbconnect configure")
-        return "Great, now to test the configuration run: databricks-connect test"
-
-
     @staticmethod
-    def _execute(cmd) -> str:
-        logging.info(f"Runnimng command: {cmd} ")
-        import subprocess
+    def _shell(cmd) -> str:
+        logging.info(f"Running shell command: {cmd} ")
         return subprocess.check_output(cmd, shell=True).decode("utf-8")
 
 def main():
