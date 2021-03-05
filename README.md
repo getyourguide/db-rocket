@@ -1,9 +1,7 @@
-
-The purpose of this library is to make it easy to develop Models in the local machine.
-
+The purpose of this project is to keep local python libraries in sync in a notebook. 
+Every change in your local machine directly applied to the notebook.
 
 ## Installing
-
 
 
 ```sh
