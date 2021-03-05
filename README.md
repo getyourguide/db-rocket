@@ -11,14 +11,20 @@ pip install git+ssh://git@github.com/getyourguide/databricks-local.git
 ```
 
 
-## Deploy python project in a notebook with watch enabled
-
-
-To deploy a python project
+For the library to work you need databricks-cli configured.
+If you havent done so you, just run:
 
 ```sh
-db_local build_and_deploy project_directory dbfs:/temp/rnr-test/conduction_time_predictor --enable-watch=True
+ databricks configure --token
+```
 
+## Deploy python project and use in notebook
+
+
+To deploy any python project with a setup.py
+
+```sh
+db_local build_and_deploy local_project_directory dbfs:/temp/your_folder --enable-watch=True
 ```
 
 This command will return the exact command you have to perform in your notebook next:
@@ -26,6 +32,8 @@ This command will return the exact command you have to perform in your notebook 
 Create a cell in the top of the notebook and paste the content (example below)
 
 ```sh
-%pip install dbfs:/temp/rnr-test/conduction_time_predictor/conduction_time_predictor-0.0.1-py3-none-any.whl
+%pip install /dbfs/temp/your_folder/your-package0.0.1-py3-none-any.whl  --force-reinstall --no-deps
 ```
+
+
 
