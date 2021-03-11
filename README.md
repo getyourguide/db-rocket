@@ -1,5 +1,5 @@
 The purpose of this project is to keep local python libraries in sync in a notebook. 
-Every change in your local machine directly applied to the notebook.
+Every change in your local machine directly applied to the notebook. An example notebook can be found [here](https://dbc-59447477-336d.cloud.databricks.com/#notebook/7054315/command/7054434).
 
 ## Installing
 
