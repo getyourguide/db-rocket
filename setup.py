@@ -5,7 +5,7 @@ setuptools.setup(
     version="0.0.1",
     author="GetYourGuide",
     author_email="engineering.data-products@getyourguide.com",
-    description="Move code from your local machine to use in databricks during development",
+    description="Keep your local python scripts installed and in sync with a databricks notebook. Shortens the feedback loop to develop projects using a hybrid enviroment",
     url="https://github.com/getyourguide/databricks-rocket",
     packages=setuptools.find_packages(),
     install_requires=["loguru", "fire", "watchdog"],
