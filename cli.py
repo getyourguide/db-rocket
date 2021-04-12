@@ -1,5 +1,5 @@
 #!/usr/bin/env python
 
-from databricks_local.databricks_local import main
+from rocket.databricks_local import main
 
 main()

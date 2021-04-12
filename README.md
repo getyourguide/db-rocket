@@ -5,7 +5,7 @@ Every change in your local machine directly applied to the notebook. An example 
 
 
 ```sh
-pip install git+ssh://git@github.com/getyourguide/databricks-local.git
+pip install databricks-rocket
 ```
 
 
@@ -22,7 +22,7 @@ If you havent done so you, just run:
 To deploy any python project with a setup.py
 
 ```sh
-db_local build_and_deploy local_project_directory dbfs:/temp/your_folder
+rocket build_and_deploy local_project_directory dbfs:/temp/your_folder
 ```
 
 This command will return the exact command you have to perform in your notebook next:

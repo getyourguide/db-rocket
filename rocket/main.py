@@ -6,10 +6,10 @@ import subprocess
 from loguru import logger as logging
 import time
 
-from databricks_local.setup import Setup
+from rocket.setup import Setup
 
 
-class DatabricksLocal:
+class Rocket:
     def __init__(self):
         self.setup = Setup
 
@@ -50,9 +50,13 @@ class DatabricksLocal:
         )
 
         return f"""
-Great! in your notebook install the library by running: 
+Great! in your notebook install the library by running:
+
 
 %pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall --no-deps
+
+If you are dunning spark < 7 use this command:
+
         """
 
     def _watch(self):
@@ -81,4 +85,4 @@ Great! in your notebook install the library by running:
         return subprocess.check_output(cmd, shell=True).decode("utf-8")
 
 def main():
-    fire.Fire(DatabricksLocal)
+    fire.Fire(Rocket)
