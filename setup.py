@@ -1,17 +1,17 @@
 import setuptools
 
 setuptools.setup(
-    name="databricks-local",
+    name="databricks-rocket",
     version="0.0.1",
-    author="Jean Carlo Machado",
-    author_email="jean.machado@getyourguide.com",
+    author="GetYourGuide",
+    author_email="engineering.data-productsgetyourguide.com",
     description="Move code from your local machine to use in databricks during development",
-    url="https://github.com/getyourguide/databricks-local",
+    url="https://github.com/getyourguide/databricks-rocket",
     packages=setuptools.find_packages(),
     install_requires=["loguru", "fire", "watchdog"],
     entry_points={
         'console_scripts': [
-            'db_local=databricks_local.databricks_local:main'
+            'rocket=databricks_local.databricks_local:main'
         ]
     }
 )
