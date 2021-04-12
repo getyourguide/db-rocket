@@ -13,7 +13,7 @@ class Rocket:
     def __init__(self):
         self.setup = Setup
 
-    def build_and_deploy(self, project_location: str, dbfs_folder: str, enable_watch=False):
+    def trigger(self, project_location: str, dbfs_path: str, enable_watch=False):
         """
         :param project_location:
         :param dbfs_folder: path where the wheel will be stored, ex: dbfs:/tmp/myteam/myproject
@@ -21,7 +21,10 @@ class Rocket:
         """
 
         self.project_location = project_location
-        self.dbfs_folder = dbfs_folder
+        project_directory = os.path.dirname(project_location)
+        project_directory = project_directory[:-1]
+
+        self.dbfs_folder = dbfs_path + project_directory
 
         if enable_watch:
             return self._watch()
@@ -38,7 +41,7 @@ class Rocket:
         # cleans up dist
         self._shell(f"rm {dist_location}/* || true")
 
-        self._shell(f"cd {self.project_location} ; python setup.py bdist_wheel")
+        self._shell(f"cd {self.project_location} ; python -m build")
         self.wheel_file = self._shell(f"ls {dist_location} | head -n 1").replace("\n", "")
         self.wheel_path = f"{dist_location}/{self.wheel_file}"
         logging.info(f"Build Successful. Wheel: '{self.wheel_path}' ")
