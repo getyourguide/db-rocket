@@ -87,7 +87,14 @@ If you are dunning spark < 7 use this command:
         logging.info(f"Running shell command: {cmd} ")
         return subprocess.check_output(cmd, shell=True).decode("utf-8")
 
-    def build_self(self):
+    def _build_self(self):
+        """
+        Build rocket for pypi. Run it on the root of rocket project.
+        """
+        os.system("rm -rf dist/* || true")
+        os.system("python3 -m build")
+
+    def _release_self(self):
         """
         Build rocket for pypi. Run it on the root of rocket project.
         """
