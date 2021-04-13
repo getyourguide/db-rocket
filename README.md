@@ -22,7 +22,7 @@ If you havent done so you, just run:
 To deploy any python project with a setup.py
 
 ```sh
-rocket build_and_deploy local_project_directory dbfs:/temp/your_folder
+rocket trigger local_project_directory dbfs:/temp/your_folder
 ```
 
 This command will return the exact command you have to perform in your notebook next:
@@ -33,7 +33,7 @@ Create a cell in the top of the notebook and paste the content (example below)
 %pip install /dbfs/temp/your_folder/your-package0.0.1-py3-none-any.whl  --force-reinstall --no-deps
 ```
 
-To keep tracking any file changes add the parameter `--enable-watch=True` to the build_and_deploy command.
+To keep tracking any file changes add the parameter `--enable-watch=True` to the trigger command.
 
 
 
