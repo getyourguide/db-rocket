@@ -1,7 +1,7 @@
-The purpose of this project is to keep local python libraries in sync in a notebook. 
-Every change in your local machine directly applied to the notebook.
+The purpose of this project is to keep a Databricks notebook synced with local python libraries. 
+Every change on your local machine is directly applied to the notebook.
 
-## Installing
+## Installing locally
 
 
 ```sh
@@ -9,8 +9,8 @@ pip install databricks-rocket
 ```
 
 
-For the library to work you need databricks-cli configured.
-If you havent done so you, just run:
+For the library to work you need databricks-cli configured with a valid token.
+If you haven't done so you, just run:
 
 ```sh
  databricks configure --token
@@ -19,7 +19,7 @@ If you havent done so you, just run:
 ## Deploy python project and use in notebook
 
 
-To deploy any python project with a setup.py
+To deploy any python project *with a setup.py*
 
 ```sh
 rocket trigger local_project_directory dbfs:/temp/your_folder

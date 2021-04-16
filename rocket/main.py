@@ -58,7 +58,9 @@ Great! in your notebook install the library by running:
 
 %pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall --no-deps
 
-If you are dunning spark < 7 use this command:
+If you are running spark < 7 use this command:
+
+!pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall --no-deps
 
         """
 
