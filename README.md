@@ -1,3 +1,10 @@
+<div align="center" >
+  <img height="290px" src="https://i.imgur.com/JZ5IXA6.png">
+</div>
+
+
+
+
 The purpose of this project is to keep a Databricks notebook synced with local python libraries. 
 Every change on your local machine is directly applied to the notebook.
 
