@@ -68,7 +68,7 @@ If you are running spark < 7 use this command:
         cmd = f"watchmedo shell-command -w -W --interval 3 --patterns='*.py' --ignore-pattern='*build*'" \
               f" --recursive " \
               f"--command='rocket " \
-              f"build_and_deploy " \
+              f"trigger " \
               f"{self.project_location} {self.dbfs_folder}' {self.project_location}"
         logging.info(f'watch command: {cmd}')
         print(os.system(cmd))

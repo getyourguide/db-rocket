@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="databricks-rocket",
-    version="0.0.5",
+    version="0.0.7",
     author="GetYourGuide",
     author_email="engineering.data-products@getyourguide.com",
     description="Keep your local python scripts installed and in sync with a databricks notebook. Shortens the feedback loop to develop projects using a hybrid enviroment",
