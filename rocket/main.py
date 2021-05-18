@@ -42,7 +42,7 @@ class Rocket:
         self._shell(f"rm {dist_location}/* || true")
 
         self._shell(f"cd {self.project_location} ; python -m build")
-        self.wheel_file = self._shell(f"ls {dist_location} | head -n 1").replace("\n", "")
+        self.wheel_file = self._shell(f"cd {dist_location}; ls *.whl | head -n 1").replace("\n", "")
         self.wheel_path = f"{dist_location}/{self.wheel_file}"
         logging.info(f"Build Successful. Wheel: '{self.wheel_path}' ")
 

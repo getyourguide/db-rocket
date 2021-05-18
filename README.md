@@ -14,7 +14,8 @@ For the library to work you need databricks-cli configured with a valid token.
 If you haven't done so you, just run:
 
 ```sh
- databricks configure --token
+pip install databricks-cli
+databricks configure --token
 ```
 
 ## Deploy python project and use in notebook
@@ -39,7 +40,12 @@ Create a cell in the top of the notebook and paste the content (example below)
 
 To keep tracking any file changes add the parameter `--enable-watch=True` to the trigger command.
 
+## Troubleshooting
 
+If building your package is failing upgrade the build library:
+
+```sh
+python3 -m pip install --upgrade build 
+```
 
 Contributions are welcomed!
-

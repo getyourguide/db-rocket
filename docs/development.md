@@ -9,3 +9,7 @@ Install the project in your machine like this:
 
 ## Build the package and upload it to PyPi
 
+
+```sh
+./cli.py _release_self
+```
