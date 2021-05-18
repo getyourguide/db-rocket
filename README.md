@@ -43,7 +43,7 @@ Create a cell in the top of the notebook and paste the content (example below)
 %pip install /dbfs/temp/your_folder/your-package0.0.1-py3-none-any.whl  --force-reinstall --no-deps
 ```
 
-To keep tracking any file changes add the parameter `--enable-watch=True` to the trigger command.
+To really go fast enable the watch flag to react at every change in the repository: **--enable-watch=True** 
 
 ## Troubleshooting
 
