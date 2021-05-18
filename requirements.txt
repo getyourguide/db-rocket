@@ -3,3 +3,4 @@ fire==0.4.0
 watchdog==2.0.2
 databricks-cli==0.14.2
 argh
+build

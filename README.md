@@ -1,9 +1,3 @@
-<div align="center" >
-  <img height="290px" src="https://i.imgur.com/JZ5IXA6.png">
-</div>
-
-
-
 
 The purpose of this project is to keep a Databricks notebook synced with local python libraries. 
 Every change on your local machine is directly applied to the notebook.
@@ -29,8 +23,11 @@ If you haven't done so you, just run:
 To deploy any python project *with a setup.py*
 
 ```sh
-rocket trigger local_project_directory dbfs:/temp/your_folder
+rocket trigger local_project_directory dbfs:/your_temp_folder
+# /your_temp_folder can be any path in dbfs you have permission
+# if the directory is not there it will be created
 ```
+
 
 This command will return the exact command you have to perform in your notebook next:
 
