@@ -5,7 +5,7 @@ Shortens the feedback loop to develop projects using a hybrid enviroment.
 Every change on your local machine is directly applied to the notebook.
 
 
-## Installing locally
+## Installing
 
 
 ```sh
@@ -52,5 +52,12 @@ If building your package is failing upgrade the build library:
 ```sh
 python3 -m pip install --upgrade build 
 ```
+
+
+
+## Acknowledgments
+
+- Thanks Leon Poli for the Logo :)
+- Stephane Leonard for source-code and documentation improvements :)
 
 Contributions are welcomed!
