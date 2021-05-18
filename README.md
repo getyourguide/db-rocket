@@ -11,11 +11,13 @@ pip install databricks-rocket
 
 
 For the library to work you need databricks-cli configured with a valid token.
-If you haven't done so you, just run:
+If you haven't done so yet just run:
 
 ```sh
 pip install databricks-cli
 databricks configure --token
+#optionally run the following to make sure your configuration is ok
+databricks-connect test
 ```
 
 ## Deploy python project and use in notebook

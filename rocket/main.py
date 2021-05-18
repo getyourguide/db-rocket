@@ -6,12 +6,9 @@ import subprocess
 from loguru import logger as logging
 import time
 
-from rocket.setup import Setup
 
 
 class Rocket:
-    def __init__(self):
-        self.setup = Setup
 
     def trigger(self, project_location: str, dbfs_path: str, enable_watch=False):
         """
