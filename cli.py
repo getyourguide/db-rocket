@@ -1,5 +1,18 @@
 #!/usr/bin/env python
 
-from rocket.main import main
+import fire
+from rocket.main import Rocket
+from rocket.self_release import SelfRelease
 
-main()
+
+class Cli:
+    """
+    Cli used for developing db-rocket. The real binary exported during installation is rocket
+
+    """
+    def __init__(self):
+        self.rocket = Rocket
+        self.self_release = SelfRelease
+
+if __name__ == "__main__":
+    fire.Fire(Cli)

@@ -1,15 +1,12 @@
 import os
 import fire
-import sys
 import subprocess
 
 from loguru import logger as logging
-import time
-
 
 
 class Rocket:
-
+    """rocket main executable"""
     def trigger(self, project_location: str, dbfs_path: str, enable_watch=False):
         """
         :param project_location:
@@ -85,21 +82,6 @@ If you are running spark < 7 use this command:
     def _shell(cmd) -> str:
         logging.info(f"Running shell command: {cmd} ")
         return subprocess.check_output(cmd, shell=True).decode("utf-8")
-
-    def _build_self(self):
-        """
-        Build rocket for pypi. Run it on the root of rocket project.
-        """
-        os.system("rm -rf dist/* || true")
-        os.system("python3 -m build")
-
-    def _release_self(self):
-        """
-        Build rocket for pypi. Run it on the root of rocket project.
-        """
-        os.system("rm -rf dist/* || true")
-        os.system("python3 -m build")
-        os.system("python3 -m twine upload dist/*")
 
 
 def main():
