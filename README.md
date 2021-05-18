@@ -1,6 +1,7 @@
 ![image](https://user-images.githubusercontent.com/2252355/118677158-5293ed80-b7fc-11eb-9619-e98829bbc9ce.png)
 
-The purpose of this project is to keep a Databricks notebook synced with local python libraries. 
+Keep your local python scripts installed and in sync with a databricks notebook.
+Shortens the feedback loop to develop projects using a hybrid enviroment.
 Every change on your local machine is directly applied to the notebook.
 
 
