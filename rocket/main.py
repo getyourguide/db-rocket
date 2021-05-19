@@ -51,7 +51,7 @@ class Rocket:
             f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
         )
 
-        return f"""
+        print(f"""
 Great! in your notebook install the library by running:
 
 %pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall
@@ -60,7 +60,7 @@ If you are running spark 6 use this command instead (and clean the state before 
 
 dbutils.library.install('{self.dbfs_folder}/{self.wheel_file}'); dbutils.library.restartPython()
 
-        """
+        """)
 
     def _watch(self):
         cmd = f"watchmedo shell-command -w -W --interval {self._interval_repeat_watch} --patterns='*.py' --ignore-pattern='*build*'" \
