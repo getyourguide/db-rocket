@@ -29,7 +29,7 @@ On Mac, also upgrade the build library:
 python3 -m pip install --upgrade build 
 ```
 
-## Using: Deploy python project and use in notebook
+## Using
 
 
 To deploy any python project *with a setup.py*
