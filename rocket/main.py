@@ -7,6 +7,8 @@ from loguru import logger as logging
 
 class Rocket:
     _python_executable = 'python3'
+    _interval_repeat_watch = 3
+    # in seconds
     """rocket main executable"""
     def trigger(self, project_location: str, dbfs_path: str, watch=False):
         """
@@ -23,7 +25,7 @@ class Rocket:
 
         if watch:
             self._build_and_deploy()
-            from time import sleep; sleep(5)
+            from time import sleep; sleep(self._interval_repeat_watch)
             return self._watch()
 
         return self._build_and_deploy()
@@ -54,14 +56,14 @@ Great! in your notebook install the library by running:
 
 %pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall --no-deps
 
-If you are running spark 6 use this command instead:
+If you are running spark 6 use this command instead (and clean the state before a new version):
 
-dbutils.library.install('{self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file}'); dbutils.library.restartPython()
+dbutils.library.install('{self.dbfs_folder}/{self.wheel_file}'); dbutils.library.restartPython()
 
         """
 
     def _watch(self):
-        cmd = f"watchmedo shell-command -w -W --interval 3 --patterns='*.py' --ignore-pattern='*build*'" \
+        cmd = f"watchmedo shell-command -w -W --interval {self._interval_repeat_watch} --patterns='*.py' --ignore-pattern='*build*'" \
               f" --recursive " \
               f"--command='rocket " \
               f"trigger " \

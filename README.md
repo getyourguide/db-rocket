@@ -7,13 +7,14 @@ Every change on your local machine is directly applied to the notebook.
 
 ## Installing
 
+For a clean python installation (specially on Macs) we recommend [using conda](docs/conda.md)
 
 ```sh
 pip install databricks-rocket
 ```
 
-For the library to work you need databricks-cli configured with a valid token.
-If you haven't done so yet just run:
+For the library to work you need [databricks-cli](https://pypi.org/project/databricks-cli) configured with a valid token.
+If you haven't done so yet just run the commands below and follow the instructions:
 
 ```sh
 pip install databricks-cli
@@ -28,7 +29,7 @@ On Mac, also upgrade the build library:
 python3 -m pip install --upgrade build 
 ```
 
-## Deploy python project and use in notebook
+## Using: Deploy python project and use in notebook
 
 
 To deploy any python project *with a setup.py*
@@ -38,7 +39,6 @@ rocket trigger local_project_directory dbfs:/temp/your_name --watch=True
 # you can you any path here but we recommend namespacing it with your name
 ```
 
-
 This command will return the exact command you have to perform in your notebook next:
 
 Create a cell in the top of the notebook and paste the content (example below)
@@ -47,10 +47,9 @@ Create a cell in the top of the notebook and paste the content (example below)
 %pip install /dbfs/temp/your_folder/your-package0.0.1-py3-none-any.whl  --force-reinstall --no-deps 
 ```
 
-
 ## Support
 
-- Spark: 7 (recommended), 6 (partially supported)  
+- Spark: 7 (recommended), 6 (supported but requires cleaning the notebook state)  
 - Python: >=3.7
 - Tested on Platform: Linux, Mac. Windows will probably not work but contributions are welcomed!
 
