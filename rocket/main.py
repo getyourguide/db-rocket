@@ -21,7 +21,9 @@ class Rocket:
 
         self.dbfs_folder = dbfs_path + project_directory
 
-        if enable_watch:
+        if watch:
+            self._build_and_deploy()
+            from time import sleep; sleep(5)
             return self._watch()
 
         return self._build_and_deploy()
