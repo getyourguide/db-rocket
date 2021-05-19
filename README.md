@@ -12,7 +12,6 @@ Every change on your local machine is directly applied to the notebook.
 pip install databricks-rocket
 ```
 
-
 For the library to work you need databricks-cli configured with a valid token.
 If you haven't done so yet just run:
 
@@ -21,15 +20,22 @@ pip install databricks-cli
 databricks configure --token
 ```
 
+### Troubleshooting
+
+On Mac, also upgrade the build library:
+
+```sh
+python3 -m pip install --upgrade build 
+```
+
 ## Deploy python project and use in notebook
 
 
 To deploy any python project *with a setup.py*
 
 ```sh
-rocket trigger local_project_directory dbfs:/your_temp_folder
-# /your_temp_folder can be any path in dbfs you have permission
-# if the directory is not there it will be created
+rocket trigger local_project_directory dbfs:/temp/your_name --watch=True
+# you can you any path here but we recommend namespacing it with your name
 ```
 
 
@@ -38,23 +44,15 @@ This command will return the exact command you have to perform in your notebook 
 Create a cell in the top of the notebook and paste the content (example below)
 
 ```sh
-%pip install /dbfs/temp/your_folder/your-package0.0.1-py3-none-any.whl  --force-reinstall --no-deps
+%pip install /dbfs/temp/your_folder/your-package0.0.1-py3-none-any.whl  --force-reinstall --no-deps 
 ```
 
-To really go fast enable the watch flag to react at every change in the repository: **--enable-watch=True** 
-
-## Troubleshooting
-
-If building your package is failing (happens on Mac) upgrade the build library:
-
-```sh
-python3 -m pip install --upgrade build 
-```
 
 ## Support
 
+- Spark: 7 (recommended), 6 (partially supported)  
+- Python: >=3.7
 - Tested on Platform: Linux, Mac. Windows will probably not work but contributions are welcomed!
-- Python: 3.7, 3.8, 3.9
 
 
 ## Acknowledgments

@@ -8,7 +8,7 @@ from loguru import logger as logging
 class Rocket:
     _python_executable = 'python3'
     """rocket main executable"""
-    def trigger(self, project_location: str, dbfs_path: str, enable_watch=False):
+    def trigger(self, project_location: str, dbfs_path: str, watch=False):
         """
         :param project_location:
         :param dbfs_folder: path where the wheel will be stored, ex: dbfs:/tmp/myteam/myproject
