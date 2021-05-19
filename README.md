@@ -19,8 +19,6 @@ If you haven't done so yet just run:
 ```sh
 pip install databricks-cli
 databricks configure --token
-#optionally run the following to make sure your configuration is ok
-databricks-connect test
 ```
 
 ## Deploy python project and use in notebook
@@ -47,7 +45,7 @@ To really go fast enable the watch flag to react at every change in the reposito
 
 ## Troubleshooting
 
-If building your package is failing upgrade the build library:
+If building your package is failing (happens on Mac) upgrade the build library:
 
 ```sh
 python3 -m pip install --upgrade build 
