@@ -6,6 +6,7 @@ from loguru import logger as logging
 
 
 class Rocket:
+    _python_executable = 'python3'
     """rocket main executable"""
     def trigger(self, project_location: str, dbfs_path: str, enable_watch=False):
         """
@@ -35,7 +36,7 @@ class Rocket:
         # cleans up dist
         self._shell(f"rm {dist_location}/* || true")
 
-        self._shell(f"cd {self.project_location} ; python -m build")
+        self._shell(f"cd {self.project_location} ; {self._python_executable} -m build")
         self.wheel_file = self._shell(f"cd {dist_location}; ls *.whl | head -n 1").replace("\n", "")
         self.wheel_path = f"{dist_location}/{self.wheel_file}"
         logging.info(f"Build Successful. Wheel: '{self.wheel_path}' ")
@@ -49,12 +50,11 @@ class Rocket:
         return f"""
 Great! in your notebook install the library by running:
 
-
 %pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall --no-deps
 
-If you are running spark < 7 use this command:
+If you are running spark 6 use this command instead:
 
-%pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall --no-deps
+dbutils.library.install('{self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file}'); dbutils.library.restartPython()
 
         """
 
@@ -74,7 +74,6 @@ If you are running spark < 7 use this command:
         logging.info("Starting to build")
         self._build()
         result = self._deploy()
-        #self._send_notification("Deploy finished successfully")
         return result
 
 
