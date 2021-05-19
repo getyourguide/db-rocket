@@ -35,7 +35,8 @@ python3 -m pip install --upgrade build
 To deploy any python project *with a setup.py*
 
 ```sh
-rocket trigger local_project_directory dbfs:/temp/your_name --watch=True
+# enter the project you want to install in the notebook and run the following command
+rocket trigger . dbfs:/temp/your_name --watch=True
 # you can you any path here but we recommend namespacing it with your name
 ```
 
