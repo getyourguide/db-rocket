@@ -53,6 +53,10 @@ If building your package is failing upgrade the build library:
 python3 -m pip install --upgrade build 
 ```
 
+## Support
+
+- Tested on Platform: Linux, Mac. Windows will probably not work but contributions are welcomed!
+- Python: 3.7, 3.8, 3.9
 
 
 ## Acknowledgments
