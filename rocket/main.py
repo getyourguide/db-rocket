@@ -54,7 +54,7 @@ class Rocket:
         return f"""
 Great! in your notebook install the library by running:
 
-%pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall --no-deps
+%pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall
 
 If you are running spark 6 use this command instead (and clean the state before a new version):
 
