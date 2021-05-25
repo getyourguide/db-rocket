@@ -61,7 +61,8 @@ Create a cell in the top of the notebook and paste the content (example below)
 ## Acknowledgments
 
 - Thanks Leon Poli for the Logo :)
-- Stephane Leonard for source-code and documentation improvements :)
+- Thanks Stephane Leonard for source-code and documentation improvements :)
+- Thanks Malachi Soord for the CICD setup and README improvements
 
 Contributions are welcomed!
 
