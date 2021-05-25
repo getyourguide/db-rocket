@@ -1,5 +1,8 @@
 ![image](https://user-images.githubusercontent.com/2252355/118677158-5293ed80-b7fc-11eb-9619-e98829bbc9ce.png)
 
+[![PyPI version](https://badge.fury.io/py/databricks-rocket.svg)](https://badge.fury.io/py/databricks-rocket)
+![PyPI downloads](https://img.shields.io/pypi/dm/databricks-rocket)
+
 Keep your local python scripts installed and in sync with a databricks notebook.
 Shortens the feedback loop to develop projects using a hybrid enviroment.
 Every change on your local machine is directly applied to the notebook.
@@ -7,7 +10,7 @@ Every change on your local machine is directly applied to the notebook.
 
 ## Installing
 
-For a clean python installation (specially on Macs) we recommend [using conda](docs/conda.md)
+For a clean python installation (specially on MacOs) we recommend [using conda](docs/conda.md)
 
 ```sh
 pip install databricks-rocket
@@ -23,7 +26,7 @@ databricks configure --token
 
 ### Troubleshooting
 
-On Mac, also upgrade the build library:
+On MacOs, also upgrade the build library:
 
 ```sh
 python3 -m pip install --upgrade build 
@@ -52,7 +55,7 @@ Create a cell in the top of the notebook and paste the content (example below)
 
 - Spark: 7 (recommended), 6 (supported but requires cleaning the notebook state)  
 - Python: >=3.7
-- Tested on Platform: Linux, Mac. Windows will probably not work but contributions are welcomed!
+- Tested on Platform: Linux, MacOs. Windows will probably not work but contributions are welcomed!
 
 
 ## Acknowledgments
@@ -61,3 +64,13 @@ Create a cell in the top of the notebook and paste the content (example below)
 - Stephane Leonard for source-code and documentation improvements :)
 
 Contributions are welcomed!
+
+# Security
+
+For security issues please contact [security@getyourguide.com](mailto:security@getyourguide.com).
+
+# Legal
+
+Copyright 2021 GetYourGuide GmbH.
+
+BambooCoffee is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE.txt) for the full text.
