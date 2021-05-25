@@ -73,4 +73,4 @@ For security issues please contact [security@getyourguide.com](mailto:security@g
 
 Copyright 2021 GetYourGuide GmbH.
 
-BambooCoffee is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE.txt) for the full text.
+db-rocket is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE.txt) for the full text.
