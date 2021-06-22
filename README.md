@@ -4,8 +4,9 @@
 ![PyPI downloads](https://img.shields.io/pypi/dm/databricks-rocket)
 
 Keep your local python scripts installed and in sync with a databricks notebook.
-Shortens the feedback loop to develop projects using a hybrid enviroment.
-Every change on your local machine is directly applied to the notebook.
+Every change on your local machine is automatically applied to the notebook.
+Shortens the feedback loop to develop git based projects.
+Removes the need to setup a local development environment.
 
 
 ## Installing
