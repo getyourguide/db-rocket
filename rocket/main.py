@@ -63,7 +63,7 @@ dbutils.library.install('{self.dbfs_folder}/{self.wheel_file}'); dbutils.library
         """)
 
     def _watch(self):
-        cmd = f"watchmedo shell-command -w -W --interval {self._interval_repeat_watch} --patterns='*.py' --ignore-pattern='*build*'" \
+        cmd = f"watchmedo shell-command -w -W --interval {self._interval_repeat_watch} --patterns='*.py' --ignore-pattern='*build*;*egg-info*;*dist*'" \
               f" --recursive " \
               f"--command='rocket " \
               f"trigger " \
