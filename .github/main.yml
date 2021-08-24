@@ -18,3 +18,6 @@ jobs:
       run: pip install -r requirements-test.txt
     - name: Run tests
       run: pytest tests/ -v
+
+    - name: type check
+      run: mypy .

@@ -1,9 +1,10 @@
 import os
 import fire
 import subprocess
+import logging
+import sys
 
-from loguru import logger as logging
-
+logging.basicConfig(stream=sys.stdout)
 
 class Rocket:
     _python_executable = 'python3'
