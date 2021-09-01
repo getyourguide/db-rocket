@@ -1,8 +1,9 @@
-import os
-import fire
-import subprocess
 import logging
+import os
+import subprocess
 import sys
+
+import fire
 
 
 def configure_logger() -> logging.Logger:
@@ -13,18 +14,20 @@ def configure_logger() -> logging.Logger:
     logger.setLevel(logging.INFO)
     return logger
 
+
 logger = configure_logger()
+
 
 class Rocket:
     """ Entry point of the installed program, all public methods are options of the program"""
 
     # in seconds
-    _interval_repeat_watch : int = 3
-    _python_executable : str = 'python3'
-    _rocket_executable : str = 'rocket'
-
+    _interval_repeat_watch: int = 3
+    _python_executable: str = "python3"
+    _rocket_executable: str = "rocket"
 
     """rocket main executable"""
+
     def trigger(self, project_location: str, dbfs_path: str, watch=False):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -42,7 +45,9 @@ class Rocket:
         if watch:
             # first time build and then watch so we have an immediate build
             self._build_and_deploy()
-            from time import sleep; sleep(self._interval_repeat_watch)
+            from time import sleep
+
+            sleep(self._interval_repeat_watch)
             return self._watch()
 
         return self._build_and_deploy()
@@ -54,14 +59,18 @@ class Rocket:
         logger.info("Building python library")
 
         if not os.path.exists(f"{self.project_location}/setup.py"):
-            raise Exception("To be turned into a library your project has to contain a setup.py file")
+            raise Exception(
+                "To be turned into a library your project has to contain a setup.py file"
+            )
 
         dist_location = f"{self.project_location}/dist"
         # cleans up dist folder from previous build
         self._shell(f"rm {dist_location}/* 2>/dev/null || true")
 
         self._shell(f"cd {self.project_location} ; {self._python_executable} -m build ")
-        self.wheel_file = self._shell(f"cd {dist_location}; ls *.whl | head -n 1").replace("\n", "")
+        self.wheel_file = self._shell(
+            f"cd {dist_location}; ls *.whl | head -n 1"
+        ).replace("\n", "")
         self.wheel_path = f"{dist_location}/{self.wheel_file}"
         logger.debug(f"Build Successful. Wheel: '{self.wheel_path}' ")
 
@@ -73,7 +82,8 @@ class Rocket:
             f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
         )
 
-        print(f"""Great! in your notebook install the library by running:
+        print(
+            f"""Great! in your notebook install the library by running:
 
 %pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall
 
@@ -81,24 +91,26 @@ If you are running spark 6 use this command instead (and clean the state before 
 
 dbutils.library.install('{self.dbfs_folder}/{self.wheel_file}'); dbutils.library.restartPython()
 
-        """)
+        """
+        )
 
     def _watch(self) -> None:
         """
         Listen to filesystem changes to build and deploy again
         """
+
         def get_command_without_watch() -> str:
             """
             Send to the watch command the command without the watch flag otherwise an infinite loop will be triggered
             """
             command = sys.argv
-            watch_flag = '--watch=True'
+            watch_flag = "--watch=True"
             if watch_flag in command:
                 command.remove(watch_flag)
-            command = ' '.join(command)
-            logging.debug(command)
-            return command
+            command_str = " ".join(command)
+            logging.debug(command_str)
 
+            return command_str
 
         cmd = f"""watchmedo \
                 shell-command \
@@ -106,9 +118,9 @@ dbutils.library.install('{self.dbfs_folder}/{self.wheel_file}'); dbutils.library
                 --patterns='*.py'  \
                 --recursive  \
                 --ignore-patterns '*/.*;build;*.egg-info;*dist' \
-                --command='{get_command_without_watch()}' 
+                --command='{get_command_without_watch()}'
               """
-        logger.debug(f'watch command: {cmd}')
+        logger.debug(f"watch command: {cmd}")
         logger.debug(os.system(cmd))
 
     def _send_notification(self, message) -> None:

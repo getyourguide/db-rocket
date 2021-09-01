@@ -8,30 +8,8 @@ Every change on your local machine is automatically applied to the notebook.
 Shortens the feedback loop to develop git based projects.
 Removes the need to setup a local development environment.
 
+Find installation instructions [here](docs/installation.md).
 
-## Installing
-
-For a clean python installation (specially on MacOs) we recommend [using conda](docs/conda.md)
-
-```sh
-pip install databricks-rocket
-```
-
-For the library to work you need [databricks-cli](https://pypi.org/project/databricks-cli) configured with a valid token.
-If you haven't done so yet just run the commands below and follow the instructions:
-
-```sh
-pip install databricks-cli
-databricks configure --token
-```
-
-### Troubleshooting
-
-On MacOs, also upgrade the build library:
-
-```sh
-python3 -m pip install --upgrade build 
-```
 
 ## Using
 
@@ -49,12 +27,12 @@ This command will return the exact command you have to perform in your notebook 
 Create a cell in the top of the notebook and paste the content (example below)
 
 ```sh
-%pip install /dbfs/temp/your_folder/your-package0.0.1-py3-none-any.whl  --force-reinstall --no-deps 
+%pip install /dbfs/temp/your_folder/your-package0.0.1-py3-none-any.whl  --force-reinstall --no-deps
 ```
 
 ## Support
 
-- Databricks: 7 (recommended), 6.4 (supported but requires cleaning the notebook state)  
+- Databricks: 7 (recommended), 6.4 (supported but requires cleaning the notebook state)
 - Python: >=3.7
 - Tested on Platform: Linux, MacOs. Windows will probably not work but contributions are welcomed!
 
