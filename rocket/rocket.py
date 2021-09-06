@@ -10,8 +10,8 @@ def configure_logger() -> logging.Logger:
     logger = logging.getLogger("dbrocket")
     logger.addHandler(logging.StreamHandler(sys.stdout))
     # use this for debug purposes
-    logger.setLevel(logging.DEBUG)
-    # logger.setLevel(logging.INFO)
+    # logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     return logger
 
 
@@ -61,10 +61,10 @@ class Rocket:
         Listen to filesystem changes to trigger again
         """
 
-        command = sys.argv
+        command_list = sys.argv
         # disable watch takes precedence over --enable
-        command.append("--disable_watch=True")
-        command = " ".join(command)
+        command_list.append("--disable_watch=True")
+        command = " ".join(command_list)
 
         cmd = f"""watchmedo \
                 shell-command \
