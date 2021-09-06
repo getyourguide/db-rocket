@@ -137,7 +137,7 @@ Or if you are running spark 6 use this command instead (and clean the state befo
         print(
             """
         Greetings from db-rocket :)
-        Version 2n
+        Version N
         """
         )
 
