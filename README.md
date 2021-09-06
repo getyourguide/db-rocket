@@ -17,18 +17,19 @@ Find installation instructions [here](docs/installation.md).
 To deploy any python project *with a setup.py*
 
 ```sh
-# enter the project you want to install in the notebook and run the following command
-rocket trigger . dbfs:/temp/your_name --watch=True
-# you can you any path here but we recommend namespacing it with your name
+rocket trigger {local_project_directory} dbfs:{directory_to_install_in_dbfs}
 ```
 
-This command will return the exact command you have to perform in your notebook next:
+Example:
 
-Create a cell in the top of the notebook and paste the content (example below)
+![img.png](img.png)
 
-```sh
-%pip install /dbfs/temp/your_folder/your-package0.0.1-py3-none-any.whl  --force-reinstall --no-deps
-```
+
+The command returns the exact command you have to perform in your notebook next.
+Create a cell in a notebook and paste the content (example below).
+
+![img_1.png](img_1.png)
+
 
 ## Support
 
