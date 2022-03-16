@@ -33,7 +33,7 @@ Create a cell in a notebook and paste the content (example below).
 
 ## Support
 
-- Databricks: 7 (recommended), 6.4 (supported but requires cleaning the notebook state)
+- Databricks: >=7 (recommended), 6.4 (supported but requires cleaning the notebook state)
 - Python: >=3.7
 - Tested on Platform: Linux, MacOs. Windows will probably not work but contributions are welcomed!
 
