@@ -27,7 +27,7 @@ class Rocket:
     _rocket_executable: str = "rocket"
 
     def trigger(
-        self, project_location: str, dbfs_path: str, watch=True, disable_watch=False
+            self, project_location: str, dbfs_path: str, watch=True, disable_watch=False
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -60,7 +60,6 @@ class Rocket:
         """
         Listen to filesystem changes to trigger again
         """
-
         command_list = sys.argv
         # disable watch takes precedence over --enable
         command_list.append("--disable_watch=True")
@@ -91,7 +90,7 @@ class Rocket:
         print(
             f"""Great! in your notebook install the library by running:
 
-    %pip install {self.dbfs_folder.replace("dbfs:/","/dbfs/")}/{self.wheel_file} --force-reinstall
+    %pip install {self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file} --force-reinstall
 
 Or if you are running spark 6 use this command instead (and clean the state before a new version):
 
@@ -107,18 +106,24 @@ Or if you are running spark 6 use this command instead (and clean the state befo
         """
         logger.info("Building your python repo as a library")
 
-        if not os.path.exists(f"{self.project_location}/setup.py"):
+        if os.path.exists(f"{self.project_location}/setup.py"):
+            # cleans up dist folder from previous build
+            dist_location = f"/tmp/db_rocket_builds"
+            self._shell(f"rm {dist_location}/* 2>/dev/null || true")
+            self._shell(
+                f"cd {self.project_location} ; {self._python_executable} -m build --outdir {dist_location}"
+            )
+        elif os.path.exists(f"{self.project_location}/pyproject.toml"):
+            dist_location = f"{self.project_location}/dist"
+            self._shell(f"rm {dist_location}/* 2>/dev/null || true")
+            self._shell(
+                f"cd {self.project_location} ; poetry build --format wheel"
+            )
+        else:
             raise Exception(
-                "To be turned into a library your project has to contain a setup.py file"
+                "To be turned into a library your project has to contain a setup.py or pyproject.toml file"
             )
 
-        dist_location = f"/tmp/db_rocket_builds"
-        # cleans up dist folder from previous build
-        self._shell(f"rm {dist_location}/* 2>/dev/null || true")
-
-        self._shell(
-            f"cd {self.project_location} ; {self._python_executable} -m build --outdir {dist_location}"
-        )
         self.wheel_file = self._shell(
             f"cd {dist_location}; ls *.whl | head -n 1"
         ).replace("\n", "")
