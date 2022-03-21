@@ -106,16 +106,15 @@ Or if you are running spark 6 use this command instead (and clean the state befo
         """
         logger.info("Building your python repo as a library")
 
+        # cleans up dist folder from previous build
+        dist_location = f"{self.project_location}/dist"
+        self._shell(f"rm {dist_location}/* 2>/dev/null || true")
+
         if os.path.exists(f"{self.project_location}/setup.py"):
-            # cleans up dist folder from previous build
-            dist_location = f"/tmp/db_rocket_builds"
-            self._shell(f"rm {dist_location}/* 2>/dev/null || true")
             self._shell(
                 f"cd {self.project_location} ; {self._python_executable} -m build --outdir {dist_location}"
             )
         elif os.path.exists(f"{self.project_location}/pyproject.toml"):
-            dist_location = f"{self.project_location}/dist"
-            self._shell(f"rm {dist_location}/* 2>/dev/null || true")
             self._shell(
                 f"cd {self.project_location} ; poetry build --format wheel"
             )
