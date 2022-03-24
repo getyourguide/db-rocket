@@ -3,7 +3,7 @@ import unittest
 from rocket.rocket import Rocket
 
 
-def test_build_python(python_rocket):
+def test_build_python(python_rocket: Rocket):
     """
     Test if DB Rocket can build a python project
     """
@@ -12,7 +12,7 @@ def test_build_python(python_rocket):
     assert python_rocket.wheel_path
 
 
-def test_build_poetry(poetry_rocket):
+def test_build_poetry(poetry_rocket: Rocket):
     """
     Test if DB Rocket can build a poetry project
     """
