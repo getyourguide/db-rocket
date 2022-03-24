@@ -6,7 +6,7 @@ from rocket.rocket import Rocket
 
 
 @pytest.fixture()
-def python_rocket():
+def python_rocket() -> Rocket:
     rocket = Rocket()
     test_dir = os.path.dirname(os.path.realpath(__file__))
     project_path = os.path.join(test_dir, "resources", "python-test")
@@ -15,7 +15,7 @@ def python_rocket():
 
 
 @pytest.fixture()
-def poetry_rocket():
+def poetry_rocket() -> Rocket:
     rocket = Rocket()
     test_dir = os.path.dirname(os.path.realpath(__file__))
     project_path = os.path.join(test_dir, "resources", "poetry-test")
