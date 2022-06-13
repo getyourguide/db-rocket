@@ -1,5 +1,5 @@
 fire==0.4.0
-watchdog==2.1.8
+watchdog==2.1.9
 databricks-cli==0.16.6
 argh
 build==0.8.0
