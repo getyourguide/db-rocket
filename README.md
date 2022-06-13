@@ -1,4 +1,6 @@
-![image](https://user-images.githubusercontent.com/2252355/118677158-5293ed80-b7fc-11eb-9619-e98829bbc9ce.png)
+## DB-Rocket
+<img src="https://user-images.githubusercontent.com/2252355/173396060-8ebb3a33-f389-421d-bea4-afc01a078307.svg" width="100" height="100">
+
 
 [![PyPI version](https://badge.fury.io/py/databricks-rocket.svg)](https://badge.fury.io/py/databricks-rocket)
 ![PyPI downloads](https://img.shields.io/pypi/dm/databricks-rocket)
@@ -22,7 +24,7 @@ rocket trigger {local_project_directory} dbfs:{directory_to_install_in_dbfs}
 
 Example:
 
-![img.png](img.png)
+![img.png](img.png =250x250)
 
 
 The command returns the exact command you have to perform in your notebook next.
