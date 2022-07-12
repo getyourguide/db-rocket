@@ -5,4 +5,5 @@ from rocket.rocket import Rocket
 
 if __name__ == "__main__":
     import fire
+
     fire.Fire()

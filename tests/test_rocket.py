@@ -33,9 +33,9 @@ def test_build_raises_error():
     except:
         assert True
 
-    assert not hasattr(rocket, 'wheel_file')
-    assert not hasattr(rocket, 'wheel_path')
+    assert not hasattr(rocket, "wheel_file")
+    assert not hasattr(rocket, "wheel_path")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

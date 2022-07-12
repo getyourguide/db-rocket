@@ -1,6 +1,6 @@
 ## DB-Rocket
-<img src="https://user-images.githubusercontent.com/2252355/173396060-8ebb3a33-f389-421d-bea4-afc01a078307.svg" width="100" height="100">
 
+<img src="https://user-images.githubusercontent.com/2252355/173396060-8ebb3a33-f389-421d-bea4-afc01a078307.svg" width="100" height="100">
 
 [![PyPI version](https://badge.fury.io/py/databricks-rocket.svg)](https://badge.fury.io/py/databricks-rocket)
 ![PyPI downloads](https://img.shields.io/pypi/dm/databricks-rocket)
@@ -12,9 +12,7 @@ Removes the need to setup a local development environment.
 
 Find installation instructions [here](docs/installation.md).
 
-
 ## Using
-
 
 To deploy any python project *with a setup.py*
 
@@ -26,19 +24,16 @@ Example:
 
 ![img.png](img.png =250x250)
 
-
 The command returns the exact command you have to perform in your notebook next.
 Create a cell in a notebook and paste the content (example below).
 
 ![img_1.png](img_1.png)
-
 
 ## Support
 
 - Databricks: >=7 (recommended), 6.4 (supported but requires cleaning the notebook state)
 - Python: >=3.7
 - Tested on Platform: Linux, MacOs. Windows will probably not work but contributions are welcomed!
-
 
 ## Acknowledgments
 

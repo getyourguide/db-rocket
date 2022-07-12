@@ -1,7 +1,6 @@
-# 1. Install Conda 
+# 1. Install Conda
 
 Install on your machine following the [official instructions](https://docs.conda.io/projects/continuumio-conda/en/latest/user-guide/install/macos.html)
-
 
 # 2. Create a conda enviroment
 

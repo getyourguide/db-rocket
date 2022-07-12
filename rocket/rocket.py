@@ -10,7 +10,7 @@ logger = configure_logger()
 
 
 class Rocket:
-    """ Entry point of the installed program, all public methods are options of the program"""
+    """Entry point of the installed program, all public methods are options of the program"""
 
     # in seconds
     _interval_repeat_watch: int = 2
@@ -18,7 +18,7 @@ class Rocket:
     _rocket_executable: str = "rocket"
 
     def trigger(
-            self, project_location: str, dbfs_path: str, watch=True, disable_watch=False
+        self, project_location: str, dbfs_path: str, watch=True, disable_watch=False
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -80,7 +80,9 @@ class Rocket:
                 f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
             )
         except Exception as e:
-            raise Exception(f"Error while copying files to databricks, is your DATABRICKS_TOKEN set and valid? Details follow {e}")
+            raise Exception(
+                f"Error while copying files to databricks, is your DATABRICKS_TOKEN set and valid? Details follow {e}"
+            )
 
         print(
             f"""Great! in your notebook install the library by running:
@@ -105,9 +107,7 @@ class Rocket:
                 f"cd {self.project_location} ; {self._python_executable} -m build --outdir {dist_location}"
             )
         elif os.path.exists(f"{self.project_location}/pyproject.toml"):
-            self._shell(
-                f"cd {self.project_location} ; poetry build --format wheel"
-            )
+            self._shell(f"cd {self.project_location} ; poetry build --format wheel")
         else:
             raise Exception(
                 "To be turned into a library your project has to contain a setup.py or pyproject.toml file"
