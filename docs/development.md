@@ -4,5 +4,5 @@
 
 
 ```sh
-./cli.py self_release release
+./rocket_local.py self_release release
 ```

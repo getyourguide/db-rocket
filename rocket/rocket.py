@@ -1,19 +1,10 @@
-import logging
 import os
 import subprocess
 import sys
 
 import fire
 
-
-def configure_logger() -> logging.Logger:
-    logger = logging.getLogger("dbrocket")
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-    # use this for debug purposes
-    # logger.setLevel(logging.DEBUG)
-    logger.setLevel(logging.INFO)
-    return logger
-
+from rocket.logger import configure_logger
 
 logger = configure_logger()
 
@@ -83,20 +74,19 @@ class Rocket:
         """
         Copies the built library to dbfs
         """
-        self._shell(
-            f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
-        )
+
+        try:
+            self._shell(
+                f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
+            )
+        except Exception as e:
+            raise Exception(f"Error while copying files to databricks, is your DATABRICKS_TOKEN set and valid? Details follow {e}")
 
         print(
             f"""Great! in your notebook install the library by running:
-
-    %pip install {self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file} --force-reinstall
-
-Or if you are running spark 6 use this command instead (and clean the state before a new version):
-
-    dbutils.library.install('{self.dbfs_folder}/{self.wheel_file}')
-    dbutils.library.restartPython()
-
+            
+%pip install --upgrade pip
+%pip install {self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file} --force-reinstall
         """
         )
 
@@ -129,21 +119,10 @@ Or if you are running spark 6 use this command instead (and clean the state befo
         self.wheel_path = f"{dist_location}/{self.wheel_file}"
         logger.debug(f"Build Successful. Wheel: '{self.wheel_path}' ")
 
-    def _send_notification(self, message) -> None:
-        os.system(f"notify-send '{message}'")
-
     @staticmethod
     def _shell(cmd) -> str:
         logger.debug(f"Running shell command: {cmd} ")
         return subprocess.check_output(cmd, shell=True).decode("utf-8")
-
-    def _hello(self):
-        print(
-            """
-        Greetings from db-rocket :)
-        Version N
-        """
-        )
 
 
 def main():
