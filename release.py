@@ -1,19 +1,12 @@
 import os
 
 
-class SelfRelease:
+class Release:
     """
     Class responsible to serve the library in pypi, not part of rocket executable
     """
 
     """Module responsible for building db-rocket itself and publishing it to pypi"""
-
-    def build(self):
-        """
-        Build rocket for pypi. Run it on the root of rocket project.
-        """
-        os.system("rm -rf dist/* || true")
-        os.system("python3 -m build")
 
     def release(self):
         """
@@ -21,8 +14,16 @@ class SelfRelease:
         """
         os.system("rm -rf dist/* || true")
         os.system("python3 -m build --no-isolation")
-        print("Build successfull, uploading now")
+        self.build()
         self.upload()
+
+    def build(self):
+        """
+        Build rocket for pypi. Run it on the root of rocket project.
+        """
+        os.system("rm -rf dist/* || true")
+        os.system("python3 -m build --no-isolation")
+        print("Build successfull, uploading now")
 
     def upload(self):
         """
@@ -30,3 +31,9 @@ class SelfRelease:
         :return:
         """
         os.system("python3 -m twine upload dist/*")
+
+
+if __name__ == "__main__":
+    import fire
+
+    fire.Fire(Release)

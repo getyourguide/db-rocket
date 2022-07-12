@@ -17,6 +17,10 @@ class Rocket:
     _python_executable: str = "python3"
     _rocket_executable: str = "rocket"
 
+    def __init__(self):
+        if os.getenv("DATABRICKS_TOKEN") is None:
+            raise Exception("DATABRICKS_TOKEN must be set for db-rocket to work")
+
     def trigger(
         self, project_location: str, dbfs_path: str, watch=True, disable_watch=False
     ):
