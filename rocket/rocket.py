@@ -1,17 +1,10 @@
-import logging
 import os
 import subprocess
 import sys
 
 import fire
 
-
-def configure_logger() -> logging.Logger:
-    logger = logging.getLogger("dbrocket")
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-    logger.setLevel(logging.INFO)
-    return logger
-
+from rocket.logger import configure_logger
 
 logger = configure_logger()
 
