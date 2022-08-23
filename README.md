@@ -18,7 +18,6 @@ pip3 install databricks-rocket
 
 If you are new to python on mac, read our complete installation instructions [here](docs/installation.md).
 
-
 ## Setup
 
 Make sure you have a databricks token exported in your environment.

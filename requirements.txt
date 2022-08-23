@@ -4,3 +4,4 @@ databricks-cli>=0.17.0
 argh
 build==0.8.0
 pyyaml
+pytest
