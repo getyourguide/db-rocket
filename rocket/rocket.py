@@ -18,10 +18,6 @@ class Rocket:
     _python_executable: str = "python3"
     _rocket_executable: str = "rocket"
 
-    def __init__(self):
-        if os.getenv("DATABRICKS_TOKEN") is None:
-            raise Exception("DATABRICKS_TOKEN must be set for db-rocket to work")
-
     def setup(self):
         """
         Initialize the application.
@@ -62,6 +58,10 @@ setuptools.setup(
         :param dbfs_folder: path where the wheel will be stored, ex: dbfs:/tmp/myteam/myproject
         :return:
         """
+
+        if os.getenv("DATABRICKS_TOKEN") is None:
+            raise Exception("DATABRICKS_TOKEN must be set for db-rocket to work")
+
         if not dbfs_path:
             dbfs_path = f"dbfs:/temp/{os.environ['USER']}"
 
