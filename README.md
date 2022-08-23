@@ -17,9 +17,8 @@ Removes the need to setup a local development environment.
 pip3 install databricks-rocket
 ```
 
-Find complete installation instructions [here](docs/installation.md).
+If you are new to python on mac, read our complete installation instructions [here](docs/installation.md).
 
-To deploy make sure you project have a valid *setup.py*
 
 ## Setup
 
@@ -39,6 +38,7 @@ Will create a setup.py for you.
 
 
 ## Using
+
 ```sh
 dbrocket trigger
 ```
