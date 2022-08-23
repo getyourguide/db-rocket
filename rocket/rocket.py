@@ -1,6 +1,8 @@
 import os
 import subprocess
 import sys
+from typing import Optional
+
 
 import fire
 
@@ -21,8 +23,38 @@ class Rocket:
         if os.getenv("DATABRICKS_TOKEN") is None:
             raise Exception("DATABRICKS_TOKEN must be set for db-rocket to work")
 
+    def setup(self):
+        """
+        Initialize the application.
+        """
+        if os.path.exists("setup.py") or os.path.exists(f"pyproject.toml"):
+            print("Packaing file already exists so no need to create a new one")
+            return
+
+
+
+        content = """
+import setuptools
+
+setuptools.setup(
+    name="myproject",
+    version="0.0.1",
+    author="",
+    author_email="",
+    description="",
+    url="https://github.com/getyourguide/databricks-rocket",
+    packages=setuptools.find_packages(),
+)
+        """
+
+        with open("setup.py", "a") as myfile:
+            myfile.write(content)
+
+
+        print("Setup.py file created, feel free to modify it with your needs.")
+
     def trigger(
-        self, project_location: str, dbfs_path: str, watch=True, disable_watch=False
+        self, project_location: str = ".", dbfs_path: Optional[str] = None, watch=True, disable_watch=False
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -30,6 +62,8 @@ class Rocket:
         :param dbfs_folder: path where the wheel will be stored, ex: dbfs:/tmp/myteam/myproject
         :return:
         """
+        if not dbfs_path:
+            dbfs_path = f"dbfs:/temp/{os.environ['USER']}"
 
         self.project_location = project_location
         project_directory = os.path.dirname(project_location)
@@ -69,7 +103,7 @@ class Rocket:
                 --ignore-directories \
                 --ignore-pattern '*.pyc;*dist*;\..*;*egg-info' \
                 --recursive  \
-                --command='{command}'
+                --command='{command}' 
               """
         logger.debug(f"watch command: {cmd}")
         os.system(cmd)
@@ -100,7 +134,7 @@ class Rocket:
         """
         builds a library with that project
         """
-        logger.info("Building your python repo as a library")
+        logger.info("Building your Python repo as a library")
 
         # cleans up dist folder from previous build
         dist_location = f"{self.project_location}/dist"
@@ -108,7 +142,7 @@ class Rocket:
 
         if os.path.exists(f"{self.project_location}/setup.py"):
             self._shell(
-                f"cd {self.project_location} ; {self._python_executable} -m build --outdir {dist_location}"
+                f"cd {self.project_location} ; {self._python_executable} -m build --outdir {dist_location} 2>/dev/null"
             )
         elif os.path.exists(f"{self.project_location}/pyproject.toml"):
             self._shell(f"cd {self.project_location} ; poetry build --format wheel")
@@ -118,7 +152,7 @@ class Rocket:
             )
 
         self.wheel_file = self._shell(
-            f"cd {dist_location}; ls *.whl | head -n 1"
+            f"cd {dist_location}; ls *.whl 2>/dev/null | head -n 1"
         ).replace("\n", "")
         self.wheel_path = f"{dist_location}/{self.wheel_file}"
         logger.debug(f"Build Successful. Wheel: '{self.wheel_path}' ")
@@ -127,7 +161,6 @@ class Rocket:
     def _shell(cmd) -> str:
         logger.debug(f"Running shell command: {cmd} ")
         return subprocess.check_output(cmd, shell=True).decode("utf-8")
-
 
 def main():
     fire.Fire(Rocket)

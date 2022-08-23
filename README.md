@@ -10,21 +10,45 @@ Every change on your local machine is automatically applied to the notebook.
 Shortens the feedback loop to develop git based projects.
 Removes the need to setup a local development environment.
 
-Find installation instructions [here](docs/installation.md).
+## Installation procedure
 
-## Using
-
-To deploy any python project *with a setup.py*
 
 ```sh
-rocket trigger {local_project_directory} dbfs:{directory_to_install_in_dbfs}
+pip3 install databricks-rocket
 ```
+
+Find complete installation instructions [here](docs/installation.md).
+
+To deploy make sure you project have a valid *setup.py*
+
+## Setup
+
+Make sure you have a databricks token exported in your environment.
+
+```sh
+export DATABRICKS_TOKEN="mydatabrickstoken"
+```
+
+If your project is not a pip package already you have to make it so. You can use dbrocket to make it one.
+
+```sh
+dbrocket setup
+```
+
+Will create a setup.py for you.
+
+
+## Using
+```sh
+dbrocket trigger
+```
+
+The command returns the exact command you have to perform in your notebook next.
 
 Example:
 
-![img.png](img.png =250x250)
+![img.png](img.png)
 
-The command returns the exact command you have to perform in your notebook next.
 Create a cell in a notebook and paste the content (example below).
 
 ![img_1.png](img_1.png)

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 
 
@@ -10,7 +12,7 @@ class Release:
 
     def release(self):
         """
-        Build rocket for pypi. Run it on the root of rocket project.
+        Build rocket for pypi doing all steps. Run it on the root of rocket project.
         """
         os.system("rm -rf dist/* || true")
         os.system("python3 -m build --no-isolation")

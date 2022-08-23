@@ -1,5 +1,12 @@
 # Changelog db-rocket
 
+## Version 1.1.0
+
+- Create new binary dbrocket
+- Create dbrocket setup to initalize a setup.py
+- Use defualt values for trigger binary
+- Improve docs
+
 ## Version 1.0.4
 
 - Upgrade dependencies
