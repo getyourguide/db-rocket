@@ -3,7 +3,6 @@ import subprocess
 import sys
 from typing import Optional
 
-
 import fire
 
 from rocket.logger import configure_logger
@@ -31,8 +30,6 @@ class Rocket:
             print("Packaing file already exists so no need to create a new one")
             return
 
-
-
         content = """
 import setuptools
 
@@ -50,11 +47,14 @@ setuptools.setup(
         with open("setup.py", "a") as myfile:
             myfile.write(content)
 
-
         print("Setup.py file created, feel free to modify it with your needs.")
 
     def trigger(
-        self, project_location: str = ".", dbfs_path: Optional[str] = None, watch=True, disable_watch=False
+        self,
+        project_location: str = ".",
+        dbfs_path: Optional[str] = None,
+        watch=True,
+        disable_watch=False,
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -161,6 +161,7 @@ setuptools.setup(
     def _shell(cmd) -> str:
         logger.debug(f"Running shell command: {cmd} ")
         return subprocess.check_output(cmd, shell=True).decode("utf-8")
+
 
 def main():
     fire.Fire(Rocket)

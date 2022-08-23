@@ -12,7 +12,6 @@ Removes the need to setup a local development environment.
 
 ## Installation
 
-
 ```sh
 pip3 install databricks-rocket
 ```
@@ -35,7 +34,6 @@ dbrocket setup
 ```
 
 Will create a setup.py for you.
-
 
 ## Using
 
