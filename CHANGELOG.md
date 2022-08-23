@@ -1,5 +1,9 @@
 # Changelog db-rocket
 
+## Version 1.1.1
+
+- Error with token missing only on trigger command not on __init__ anymore.
+
 ## Version 1.1.0
 
 - Create new binary dbrocket
