@@ -10,7 +10,7 @@ Every change on your local machine is automatically applied to the notebook.
 Shortens the feedback loop to develop git based projects.
 Removes the need to setup a local development environment.
 
-## Installation procedure
+## Installation
 
 
 ```sh
