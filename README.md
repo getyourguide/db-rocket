@@ -26,7 +26,7 @@ Make sure you have a databricks token exported in your environment.
 export DATABRICKS_TOKEN="mydatabrickstoken"
 ```
 
-If your project is not a pip package already you have to make it so. You can use dbrocket to make it one.
+If your project is not a pip package already you have to turn it into one. You can use dbrocket to do that.
 
 ```sh
 dbrocket setup
@@ -34,7 +34,7 @@ dbrocket setup
 
 Will create a setup.py for you.
 
-## Using
+## Using db-rocket
 
 ```sh
 dbrocket trigger
