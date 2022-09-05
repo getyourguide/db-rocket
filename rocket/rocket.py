@@ -108,7 +108,7 @@ setuptools.setup(
         logger.debug(f"watch command: {cmd}")
         os.system(cmd)
 
-    def triggger(
+    def trigger(
         self,
         project_location: str = ".",
         dbfs_path: Optional[str] = None,

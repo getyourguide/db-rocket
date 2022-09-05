@@ -1,5 +1,9 @@
 # Changelog db-rocket
 
+## Version 1.1.3
+
+- Typo
+
 ## Version 1.1.2
 
 - Pin watchdog dependency with minimum requirement
