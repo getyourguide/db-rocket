@@ -16,7 +16,7 @@ Removes the need to setup a local development environment.
 pip3 install databricks-rocket
 ```
 
-If you are new to python on mac, read our complete installation instructions [here](docs/installation.md).
+Please sure your python interpreter is 3.7 or higher.
 
 ## Setup
 
@@ -44,7 +44,14 @@ The command returns the exact command you have to perform in your notebook next.
 
 Example:
 
-![img.png](img.png)
+```sh
+We are now building your Python repo as a library...
+Done! in your notebook install the library by running:
+
+%pip install --upgrade pip
+%pip install /dbfs/temp/username/databricks_rocket-1.1.3-py3-none-any.whl --force-reinstall
+```
+
 
 Create a cell in a notebook and paste the content (example below).
 
