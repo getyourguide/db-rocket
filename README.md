@@ -37,7 +37,7 @@ Will create a setup.py for you.
 ## Using db-rocket
 
 ```sh
-dbrocket trigger
+dbrocket launch
 ```
 
 The command returns the exact command you have to perform in your notebook next.
