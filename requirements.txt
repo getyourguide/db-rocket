@@ -7,6 +7,5 @@ pyyaml
 pytest
 poetry
 mypy
-build
 SecretStorage
 readme-renderer
