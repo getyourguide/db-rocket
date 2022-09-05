@@ -9,7 +9,6 @@ from rocket.logger import configure_logger
 
 logger = configure_logger()
 
-
 class Rocket:
     """Entry point of the installed program, all public methods are options of the program"""
 
@@ -45,7 +44,7 @@ setuptools.setup(
 
         print("Setup.py file created, feel free to modify it with your needs.")
 
-    def trigger(
+    def launch(
         self,
         project_location: str = ".",
         dbfs_path: Optional[str] = None,
@@ -108,6 +107,24 @@ setuptools.setup(
         logger.debug(f"watch command: {cmd}")
         os.system(cmd)
 
+    def triggger(
+            self,
+            project_location: str = ".",
+            dbfs_path: Optional[str] = None,
+            watch=True,
+            disable_watch=False,
+            *args, **kwargs
+    ):
+        """
+        Entrypoint of the application, triggers a build and deploy
+        :param project_location:
+        :param dbfs_folder: path where the wheel will be stored, ex: dbfs:/tmp/myteam/myproject
+        :return:
+        """
+        # use launch rather than trigger
+        self.launch(*args, **kwargs)
+
+
     def _deploy(self):
         """
         Copies the built library to dbfs
@@ -123,7 +140,7 @@ setuptools.setup(
             )
 
         print(
-            f"""Great! in your notebook install the library by running:
+            f"""Done! in your notebook install the library by running:
             
 %pip install --upgrade pip
 %pip install {self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file} --force-reinstall
@@ -134,7 +151,7 @@ setuptools.setup(
         """
         builds a library with that project
         """
-        logger.info("Building your Python repo as a library")
+        logger.info("We are now building your Python repo as a library...")
 
         # cleans up dist folder from previous build
         dist_location = f"{self.project_location}/dist"

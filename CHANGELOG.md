@@ -1,5 +1,10 @@
 # Changelog db-rocket
 
+## Version 1.1.2
+
+- Pin watchdog dependency with minimum requirement
+- dbrocket launch rather then trigger
+
 ## Version 1.1.1
 
 - Error with token missing only on trigger command not on __init__ anymore.

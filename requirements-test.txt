@@ -1,6 +1,0 @@
--r requirements.txt
-pytest
-mypy
-build
-SecretStorage
-readme-renderer
