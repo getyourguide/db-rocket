@@ -9,6 +9,7 @@ from rocket.logger import configure_logger
 
 logger = configure_logger()
 
+
 class Rocket:
     """Entry point of the installed program, all public methods are options of the program"""
 
@@ -108,12 +109,13 @@ setuptools.setup(
         os.system(cmd)
 
     def triggger(
-            self,
-            project_location: str = ".",
-            dbfs_path: Optional[str] = None,
-            watch=True,
-            disable_watch=False,
-            *args, **kwargs
+        self,
+        project_location: str = ".",
+        dbfs_path: Optional[str] = None,
+        watch=True,
+        disable_watch=False,
+        *args,
+        **kwargs,
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -123,7 +125,6 @@ setuptools.setup(
         """
         # use launch rather than trigger
         self.launch(*args, **kwargs)
-
 
     def _deploy(self):
         """

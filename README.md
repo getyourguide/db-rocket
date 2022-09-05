@@ -52,7 +52,6 @@ Done! in your notebook install the library by running:
 %pip install /dbfs/temp/username/databricks_rocket-1.1.3-py3-none-any.whl --force-reinstall
 ```
 
-
 Create a cell in a notebook and paste the content (example below).
 
 ![img_1.png](img_1.png)
