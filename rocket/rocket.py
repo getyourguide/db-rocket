@@ -124,7 +124,7 @@ setuptools.setup(
         :return:
         """
         # use launch rather than trigger
-        self.launch(*args, **kwargs)
+        self.launch(project_location=project_location, dbfs_path=dbfs_path, watch=watch, disable_watch=disable_watch, *args, **kwargs)
 
     def _deploy(self):
         """
