@@ -1,5 +1,9 @@
 # Changelog db-rocket
 
+## Version 1.1.5
+
+- Adding extra index urls to install command
+
 ## Version 1.1.4
 
 - Fix error in rocket trigger cmd
