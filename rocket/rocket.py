@@ -140,11 +140,15 @@ setuptools.setup(
                 f"Error while copying files to databricks, is your DATABRICKS_TOKEN set and valid? Details follow {e}"
             )
 
+        install_cmd = f'{self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file}'
+        if self.index_urls:
+            install_cmd = f"{' '.join(self.index_urls)} {install_cmd}"
+
         print(
             f"""Done! in your notebook install the library by running:
             
 %pip install --upgrade pip
-%pip install {self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file} --force-reinstall
+%pip install {install_cmd} --force-reinstall
         """
         )
 
@@ -159,11 +163,20 @@ setuptools.setup(
         self._shell(f"rm {dist_location}/* 2>/dev/null || true")
 
         if os.path.exists(f"{self.project_location}/setup.py"):
+            logger.info("Found setup.py. Building python library")
             self._shell(
                 f"cd {self.project_location} ; {self._python_executable} -m build --outdir {dist_location} 2>/dev/null"
             )
+            self.index_urls = []
+            if os.path.exists(f"{self.project_location}/requirements.txt"):
+                with open(f"{self.project_location}/requirements.txt") as f:
+                    self.index_urls = [line.strip() for line in f.readlines() if "index-url" in line]
+
         elif os.path.exists(f"{self.project_location}/pyproject.toml"):
+            logger.info("Found pyproject.toml. Building python library with poetry")
             self._shell(f"cd {self.project_location} ; poetry build --format wheel")
+            requirements = self._shell("poetry export --with-credentials --without-hashes")
+            self.index_urls = [line.strip() for line in requirements.split("\n") if "index-url" in line]
         else:
             raise Exception(
                 "To be turned into a library your project has to contain a setup.py or pyproject.toml file"
