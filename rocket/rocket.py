@@ -175,7 +175,7 @@ setuptools.setup(
         elif os.path.exists(f"{self.project_location}/pyproject.toml"):
             logger.info("Found pyproject.toml. Building python library with poetry")
             self._shell(f"cd {self.project_location} ; poetry build --format wheel")
-            requirements = self._shell("poetry export --with-credentials --without-hashes")
+            requirements = self._shell(f"cd {self.project_location} ; poetry export --with-credentials --without-hashes")
             self.index_urls = [line.strip() for line in requirements.split("\n") if "index-url" in line]
         else:
             raise Exception(
