@@ -1,5 +1,9 @@
 # Changelog db-rocket
 
+## Version 1.1.4
+
+- Fix error in rocket trigger cmd
+
 ## Version 1.1.3
 
 - Typo
