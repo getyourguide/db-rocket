@@ -1,6 +1,6 @@
 import unittest
 
-from rocket.rocket import Rocket
+from rocket.rocket import Rocket, _add_index_urls_to_cmd
 
 
 def test_build_python(python_rocket: Rocket):
@@ -35,6 +35,20 @@ def test_build_raises_error():
 
     assert not hasattr(rocket, "wheel_file")
     assert not hasattr(rocket, "wheel_path")
+
+
+def test_add_index_urls_to_cmd():
+    dummy_cmd = "test_cmd"
+    dummy_index_urls = ["dummy_index"]
+
+    assert _add_index_urls_to_cmd(dummy_cmd, dummy_index_urls) == "dummy_index test_cmd"
+
+
+def test_add_index_urls_to_cmd_without_urls():
+    dummy_cmd = "test_cmd"
+    dummy_index_urls = []
+
+    assert _add_index_urls_to_cmd(dummy_cmd, dummy_index_urls) == "test_cmd"
 
 
 if __name__ == "__main__":
