@@ -10,6 +10,13 @@ from rocket.logger import configure_logger
 logger = configure_logger()
 
 
+def _add_index_urls_to_cmd(cmd, index_urls):
+    if index_urls:
+        return f"{' '.join(index_urls)} {cmd}"
+    else:
+        return cmd
+
+
 class Rocket:
     """Entry point of the installed program, all public methods are options of the program"""
 
@@ -46,11 +53,11 @@ setuptools.setup(
         print("Setup.py file created, feel free to modify it with your needs.")
 
     def launch(
-        self,
-        project_location: str = ".",
-        dbfs_path: Optional[str] = None,
-        watch=True,
-        disable_watch=False,
+            self,
+            project_location: str = ".",
+            dbfs_path: Optional[str] = None,
+            watch=True,
+            disable_watch=False,
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -109,13 +116,13 @@ setuptools.setup(
         os.system(cmd)
 
     def trigger(
-        self,
-        project_location: str = ".",
-        dbfs_path: Optional[str] = None,
-        watch=True,
-        disable_watch=False,
-        *args,
-        **kwargs,
+            self,
+            project_location: str = ".",
+            dbfs_path: Optional[str] = None,
+            watch=True,
+            disable_watch=False,
+            *args,
+            **kwargs,
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -124,7 +131,8 @@ setuptools.setup(
         :return:
         """
         # use launch rather than trigger
-        self.launch(project_location=project_location, dbfs_path=dbfs_path, watch=watch, disable_watch=disable_watch, *args, **kwargs)
+        self.launch(project_location=project_location, dbfs_path=dbfs_path, watch=watch, disable_watch=disable_watch,
+                    *args, **kwargs)
 
     def _deploy(self):
         """
@@ -140,11 +148,14 @@ setuptools.setup(
                 f"Error while copying files to databricks, is your DATABRICKS_TOKEN set and valid? Details follow {e}"
             )
 
+        install_cmd = f'{self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file}'
+        install_cmd = _add_index_urls_to_cmd(install_cmd, self.index_urls)
+
         print(
             f"""Done! in your notebook install the library by running:
             
 %pip install --upgrade pip
-%pip install {self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file} --force-reinstall
+%pip install {install_cmd} --force-reinstall
         """
         )
 
@@ -159,11 +170,21 @@ setuptools.setup(
         self._shell(f"rm {dist_location}/* 2>/dev/null || true")
 
         if os.path.exists(f"{self.project_location}/setup.py"):
+            logger.info("Found setup.py. Building python library")
             self._shell(
                 f"cd {self.project_location} ; {self._python_executable} -m build --outdir {dist_location} 2>/dev/null"
             )
+            self.index_urls = []
+            if os.path.exists(f"{self.project_location}/requirements.txt"):
+                with open(f"{self.project_location}/requirements.txt") as f:
+                    self.index_urls = [line.strip() for line in f.readlines() if "index-url" in line]
+
         elif os.path.exists(f"{self.project_location}/pyproject.toml"):
+            logger.info("Found pyproject.toml. Building python library with poetry")
             self._shell(f"cd {self.project_location} ; poetry build --format wheel")
+            requirements = self._shell(
+                f"cd {self.project_location} ; poetry export --with-credentials --without-hashes")
+            self.index_urls = [line.strip() for line in requirements.split("\n") if "index-url" in line]
         else:
             raise Exception(
                 "To be turned into a library your project has to contain a setup.py or pyproject.toml file"
