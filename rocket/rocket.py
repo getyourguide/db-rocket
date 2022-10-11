@@ -145,7 +145,7 @@ setuptools.setup(
             )
         except Exception as e:
             raise Exception(
-                f"Error while copying files to databricks, is your DATABRICKS_TOKEN set and valid? Details follow {e}"
+                f"Error while copying files to databricks, is your databricks token set and valid? You can update your token with `databricks configure --token`. Error details: {e}"
             )
 
         install_cmd = f'{self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file}'
