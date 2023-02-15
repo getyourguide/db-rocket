@@ -1,5 +1,9 @@
 # Changelog db-rocket
 
+## Version 1.2.0
+
+- Fix security issue with command injection, changes the behaviour of the watch command.
+
 ## Version 1.1.5
 
 - Adding extra index urls to install command
