@@ -1,6 +1,5 @@
 import os
 import subprocess
-import sys
 from typing import Optional
 
 import fire
@@ -96,10 +95,7 @@ setuptools.setup(
         """
         Listen to filesystem changes to trigger again
         """
-        command_list = sys.argv
-        # disable watch takes precedence over --enable
-        command_list.append("--disable_watch=True")
-        command = " ".join(command_list)
+        command = 'rocket trigger --disable_watch=True'
 
         cmd = f"""watchmedo \
                 shell-command \
@@ -121,8 +117,6 @@ setuptools.setup(
             dbfs_path: Optional[str] = None,
             watch=True,
             disable_watch=False,
-            *args,
-            **kwargs,
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -131,8 +125,7 @@ setuptools.setup(
         :return:
         """
         # use launch rather than trigger
-        self.launch(project_location=project_location, dbfs_path=dbfs_path, watch=watch, disable_watch=disable_watch,
-                    *args, **kwargs)
+        self.launch(project_location=project_location, dbfs_path=dbfs_path, watch=watch, disable_watch=disable_watch)
 
     def _deploy(self):
         """
@@ -200,7 +193,6 @@ setuptools.setup(
     def _shell(cmd) -> str:
         logger.debug(f"Running shell command: {cmd} ")
         return subprocess.check_output(cmd, shell=True).decode("utf-8")
-
 
 def main():
     fire.Fire(Rocket)
