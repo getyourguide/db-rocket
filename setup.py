@@ -8,7 +8,7 @@ setuptools.setup(
     description="Keep your local python scripts installed and in sync with a databricks notebook. Shortens the feedback loop to develop projects using a hybrid enviroment",
     url="https://github.com/getyourguide/databricks-rocket",
     packages=setuptools.find_packages(),
-    install_requires=["fire", "watchdog~=2.1.9", "build", "databricks_cli"],
+    install_requires=["fire", "watchdog>=2.1.9,<2.4.0", "build", "databricks_cli"],
     entry_points={
         "console_scripts": ["rocket=rocket.rocket:main", "dbrocket=rocket.rocket:main"]
     },
