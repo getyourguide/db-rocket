@@ -28,6 +28,11 @@ Then set it up locally by running:
 ```sh
 databricks configure --token
 ```
+Then, the databricks token must be exported in your environment.
+
+```sh
+export DATABRICKS_TOKEN="mydatabrickstoken"
+```
 
 If your project is not a pip package already you have to turn it into one. You can use dbrocket to do that.
 
