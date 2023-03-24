@@ -20,7 +20,15 @@ Please sure your python interpreter is 3.7 or higher.
 
 ## Setup
 
-Make sure you have a databricks token exported in your environment.
+Make sure you have a token installed for databricks cli 
+([offical documentation](https://docs.databricks.com/dev-tools/cli/index.html)). 
+First, create a token for yourself on Databricks.
+Then set it up locally by running:
+
+```sh
+databricks configure --token
+```
+Then, the databricks token must be exported in your environment.
 
 ```sh
 export DATABRICKS_TOKEN="mydatabrickstoken"
