@@ -20,5 +20,6 @@ From here one rocket should be the dev one.
 One needs to get pypi crendentials to upload. Reach out in case of need.
 
 ```sh
+pip install twine
 ./release.py release
 ```
