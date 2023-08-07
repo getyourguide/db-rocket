@@ -136,19 +136,27 @@ setuptools.setup(
             self._shell(
                 f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
             )
+            for package_dir in self._get_python_package_dir(self.project_location):
+                self._shell(
+                    f"databricks fs cp --recursive --overwrite {package_dir} {self.dbfs_folder}/{package_dir}"
+                )
         except Exception as e:
             raise Exception(
                 f"Error while copying files to databricks, is your databricks token set and valid? Try to generate a new token and update existing one with `databricks configure --token`. Error details: {e}"
             )
 
-        install_cmd = f'{self.dbfs_folder.replace("dbfs:/", "/dbfs/")}/{self.wheel_file}'
+        base_path = self.dbfs_folder.replace("dbfs:/", "/dbfs/")
+        install_cmd = f'{base_path}/{self.wheel_file}'
         install_cmd = _add_index_urls_to_cmd(install_cmd, self.index_urls)
 
         print(
             f"""Done! in your notebook install the library by running:
+%load_ext autoreload
+%autoreload 2
             
 %pip install --upgrade pip
 %pip install {install_cmd} --force-reinstall
+!export PATH=$PATH:{base_path}
         """
         )
 
@@ -188,6 +196,15 @@ setuptools.setup(
         ).replace("\n", "")
         self.wheel_path = f"{dist_location}/{self.wheel_file}"
         logger.debug(f"Build Successful. Wheel: '{self.wheel_path}' ")
+
+    @staticmethod
+    def _get_python_package_dir(root_dir):
+        packages = []
+        for item in os.listdir(root_dir):
+            item_path = os.path.join(root_dir, item)
+            if os.path.isdir(item_path) and '__init__.py' in os.listdir(item_path):
+                packages.append(item_path)
+        return packages
 
     @staticmethod
     def _shell(cmd) -> str:
