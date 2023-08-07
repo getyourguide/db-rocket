@@ -7,3 +7,6 @@ def configure_logger() -> logging.Logger:
     logger.addHandler(logging.StreamHandler(sys.stdout))
     logger.setLevel(logging.INFO)
     return logger
+
+
+logger = configure_logger()
