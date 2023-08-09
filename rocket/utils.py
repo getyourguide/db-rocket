@@ -25,3 +25,14 @@ def extract_python_package_dirs(root_dir):
 def execute_shell_command(cmd) -> str:
     logger.debug(f"Running shell command: {cmd} ")
     return subprocess.check_output(cmd, shell=True).decode("utf-8")
+
+
+def extract_python_files_from_folder(path):
+    py_files = []
+
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            if file.endswith('.py'):
+                py_files.append(os.path.join(root, file))
+
+    return py_files

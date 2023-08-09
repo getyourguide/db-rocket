@@ -7,7 +7,7 @@ from watchdog.observers import Observer
 
 from rocket.logger import logger
 from rocket.utils import execute_shell_command, extract_project_name_from_wheel, \
-    extract_python_package_dirs
+    extract_python_package_dirs, extract_python_files_from_folder
 from rocket.watcher import Watcher
 
 
@@ -119,9 +119,10 @@ setuptools.setup(
                 )
                 package_dirs = extract_python_package_dirs(self.project_location)
                 for package_dir in package_dirs:
-                    execute_shell_command(
-                        f"databricks fs cp --recursive --overwrite {package_dir} {self.dbfs_folder}/{os.path.basename(package_dir)}"
-                    )
+                    for python_file in extract_python_files_from_folder(package_dir):
+                        execute_shell_command(
+                            f"databricks fs cp --recursive --overwrite {python_file} {self.dbfs_folder}/{os.path.relpath(python_file, self.project_location)}"
+                        )
         except Exception as e:
             raise Exception(
                 f"Error while copying files to databricks, is your databricks token set and valid? Try to generate a new token and update existing one with `databricks configure --token`. Error details: {e}"
@@ -133,9 +134,9 @@ setuptools.setup(
         project_name = extract_project_name_from_wheel(self.wheel_file)
 
         if modified_files:
-            logger.info("Changes are applied")
+            print("Changes are applied")
         elif watch:
-            logger.info(
+            print(
                 f"""You have watch activated. Your project will be automatically synchronised with databricks. Add following in one cell:
 %pip install --upgrade pip
 %pip install {install_cmd} --force-reinstall
@@ -148,7 +149,7 @@ import sys
 import os
 sys.path.append(os.path.abspath('{base_path}')""")
         else:
-            logger.info(f"""Install your library in your databricks notebook by running:
+            print(f"""Install your library in your databricks notebook by running:
     %pip install --upgrade pip
     %pip install {install_cmd} --force-reinstall""")
 
@@ -156,7 +157,7 @@ sys.path.append(os.path.abspath('{base_path}')""")
         """
         builds a library with that project
         """
-        logger.info("We are now building your Python repo as a library...")
+        print("We are now building your Python repo as a library...")
 
         # cleans up dist folder from previous build
         dist_location = f"{self.project_location}/dist"
