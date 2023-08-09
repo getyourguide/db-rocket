@@ -1,5 +1,9 @@
 # Changelog db-rocket
 
+## Version 1.3.2
+
+- Refine prints to be more clear
+
 ## Version 1.3.1
 
 - Adding Markdown documentation to package description
