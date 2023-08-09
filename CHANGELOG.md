@@ -5,7 +5,7 @@
 - Remove `rocket trigger` CLI
 - Add synchronization of project files to databricks file system
 - Replace `print` statements with `logger.info`
-- 
+- Replace running watch in shell with python code
 
 ## Version 1.2.0
 
