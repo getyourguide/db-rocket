@@ -144,7 +144,7 @@ and then in new Python cell:
 %autoreload 2
 import sys
 import os
-sys.path.append('{os.path.abspath(self.dbfs_folder)}')
+sys.path.append(os.path.abspath('{base_path}')
 """)
 
     def _build(self):
