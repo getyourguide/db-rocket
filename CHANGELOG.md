@@ -1,5 +1,12 @@
 # Changelog db-rocket
 
+## Version 1.3.0
+
+- Remove `rocket trigger` CLI
+- Add synchronization of project files to databricks file system
+- Replace `print` statements with `logger.info`
+- Replace running watch in shell with python code
+
 ## Version 1.2.0
 
 - Fix security issue with command injection, changes the behaviour of the watch command.
@@ -46,5 +53,4 @@
 
 ## Version 1.0.2
 
-feature: Add support for poetry projects
-test: Add test for dbrocket build process
+feature: Add support for poetry projects test: Add test for dbrocket build process
