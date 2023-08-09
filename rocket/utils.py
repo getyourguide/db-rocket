@@ -1,7 +1,24 @@
+import concurrent.futures
 import os
 import subprocess
 
 from rocket.logger import logger
+
+
+def execute_for_each_multithreaded(lst, func, max_threads=None):
+    """
+    Execute a given function for each entry in the list using multiple threads.
+
+    Parameters:
+    - lst: List of items to process
+    - func: Function to apply to each item
+    - max_threads: Maximum number of threads to use (default is None, which means as many as items in the list)
+
+    Returns:
+    - List of results after applying the function
+    """
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max_threads) as executor:
+        return list(executor.map(func, lst))
 
 
 def extract_package_name_from_wheel(wheel_filename):
