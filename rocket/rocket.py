@@ -145,6 +145,8 @@ and then in new Python cell:
 import sys
 import os
 sys.path.append(os.path.abspath('{base_path}')""")
+        elif modified_files:
+            logger.info("Changes are applied")
         else:
             logger.info(f"""Install your library in your databricks notebook by running:
     %pip install --upgrade pip
