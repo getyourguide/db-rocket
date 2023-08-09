@@ -5,7 +5,7 @@ import fire
 
 from rocket.logger import logger
 from rocket.utils import execute_shell_command, extract_project_name_from_wheel, \
-    extract_package_name_from_wheel
+    extract_python_package_dirs
 
 
 def _add_index_urls_to_cmd(cmd, index_urls):
@@ -114,10 +114,12 @@ setuptools.setup(
             execute_shell_command(
                 f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
             )
-            package_name = extract_package_name_from_wheel(self.wheel_file)
-            execute_shell_command(
-                f"databricks fs cp --recursive --overwrite {self.project_location}/{package_name} {self.dbfs_folder}/{package_name}"
-            )
+            package_dirs = extract_python_package_dirs(self.project_location)
+            print(package_dirs)
+            for package_dir in package_dirs:
+                execute_shell_command(
+                    f"databricks fs cp --recursive --overwrite {package_dir} {self.dbfs_folder}/{os.path.basename(package_dirs)}"
+                )
         except Exception as e:
             raise Exception(
                 f"Error while copying files to databricks, is your databricks token set and valid? Try to generate a new token and update existing one with `databricks configure --token`. Error details: {e}"
