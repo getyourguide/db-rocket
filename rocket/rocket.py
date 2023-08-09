@@ -132,7 +132,9 @@ setuptools.setup(
         install_cmd = _add_index_urls_to_cmd(install_cmd, self.index_urls)
         project_name = extract_project_name_from_wheel(self.wheel_file)
 
-        if watch:
+        if modified_files:
+            logger.info("Changes are applied")
+        elif watch:
             logger.info(
                 f"""You have watch activated. Your project will be automatically synchronised with databricks. Add following in one cell:
 %pip install --upgrade pip
@@ -145,8 +147,6 @@ and then in new Python cell:
 import sys
 import os
 sys.path.append(os.path.abspath('{base_path}')""")
-        elif modified_files:
-            logger.info("Changes are applied")
         else:
             logger.info(f"""Install your library in your databricks notebook by running:
     %pip install --upgrade pip
