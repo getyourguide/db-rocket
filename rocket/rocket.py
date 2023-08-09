@@ -1,11 +1,14 @@
 import os
+import time
 from typing import Optional
 
 import fire
+from watchdog.observers import Observer
 
 from rocket.logger import logger
 from rocket.utils import execute_shell_command, extract_project_name_from_wheel, \
     extract_python_package_dirs
+from rocket.watcher import Watcher
 
 
 def _add_index_urls_to_cmd(cmd, index_urls):
@@ -54,6 +57,7 @@ setuptools.setup(
             project_location: str = ".",
             dbfs_path: Optional[str] = None,
             watch=True,
+            _deploy=True,
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -75,51 +79,49 @@ setuptools.setup(
 
         self.dbfs_folder = dbfs_path + project_directory
 
+        if _deploy:
+            self._build_and_deploy(watch)
+
         if watch:
-            self._build_and_deploy()
-            return self._watch(
-                f'rocket launch --project_location={project_location} --watch=False --dbfs_path={dbfs_path}')
+            observer = Observer()
+            watcher = Watcher(observer)
+            observer.schedule(watcher, project_location, recursive=True)
+            observer.start()
+            try:
+                time.sleep(2)
+            finally:
+                observer.stop()
+            observer.join()
+            if watcher.modified_files:
+                self._deploy(watch=watch, modified_files=watcher.modified_files)
+            return self.launch(project_location=project_location, dbfs_path=dbfs_path, watch=True, _deploy=False)
 
-        return self._build_and_deploy()
-
-    def _build_and_deploy(self):
+    def _build_and_deploy(self, watch, modified_files=None):
         self._build()
-        result = self._deploy()
+        result = self._deploy(watch=watch, modified_files=modified_files)
         return result
 
-    def _watch(self, command) -> None:
-        """
-        Listen to filesystem changes to trigger again
-        """
-        cmd = f"""watchmedo \
-                shell-command \
-                --patterns='*.py'  \
-                --wait --drop \
-                --interval {self._interval_repeat_watch} \
-                --debug-force-polling \
-                --ignore-directories \
-                --ignore-pattern '*.pyc;*dist*;\..*;*egg-info' \
-                --recursive  \
-                --command='{command}' 
-              """
-        logger.debug(f"watch command: {cmd}")
-        execute_shell_command(cmd)
-
-    def _deploy(self):
+    def _deploy(self, watch, modified_files):
         """
         Copies the built library to dbfs
         """
 
         try:
-            execute_shell_command(
-                f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
-            )
-            package_dirs = extract_python_package_dirs(self.project_location)
-            print(package_dirs)
-            for package_dir in package_dirs:
+            if modified_files:
+                logger.info(f"Found changes in {modified_files}. Overwriting them.")
+                for file in modified_files:
+                    execute_shell_command(
+                        f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{os.path.relpath(file, self.project_location)}"
+                    )
+            else:
                 execute_shell_command(
-                    f"databricks fs cp --recursive --overwrite {package_dir} {self.dbfs_folder}/{os.path.basename(package_dirs)}"
+                    f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
                 )
+                package_dirs = extract_python_package_dirs(self.project_location)
+                for package_dir in package_dirs:
+                    execute_shell_command(
+                        f"databricks fs cp --recursive --overwrite {package_dir} {self.dbfs_folder}/{os.path.basename(package_dir)}"
+                    )
         except Exception as e:
             raise Exception(
                 f"Error while copying files to databricks, is your databricks token set and valid? Try to generate a new token and update existing one with `databricks configure --token`. Error details: {e}"
@@ -130,13 +132,9 @@ setuptools.setup(
         install_cmd = _add_index_urls_to_cmd(install_cmd, self.index_urls)
         project_name = extract_project_name_from_wheel(self.wheel_file)
 
-        logger.info(
-            f"""Install your library in your databricks notebook by running:
-%pip install --upgrade pip
-%pip install {install_cmd} --force-reinstall
-
-
-If you have watch activated, your project will be automatically synchronised with databricks. To utilise it, add following in one cell:
+        if watch:
+            logger.info(
+                f"""You have watch activated. Your project will be automatically synchronised with databricks. Add following in one cell:
 %pip install --upgrade pip
 %pip install {install_cmd} --force-reinstall
 %pip uninstall -y {project_name}
@@ -146,8 +144,11 @@ and then in new Python cell:
 %autoreload 2
 import sys
 import os
-sys.path.append(os.path.abspath('{base_path}')
-""")
+sys.path.append(os.path.abspath('{base_path}')""")
+        else:
+            logger.info(f"""Install your library in your databricks notebook by running:
+    %pip install --upgrade pip
+    %pip install {install_cmd} --force-reinstall""")
 
     def _build(self):
         """
