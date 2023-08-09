@@ -110,7 +110,7 @@ setuptools.setup(
             if modified_files:
                 logger.info(f"Found changes in {modified_files}. Overwriting them.")
                 for file in modified_files:
-                    logger.info(f"Sync {file}")
+                    logger.info(f"Finished sync of {file}")
                     execute_shell_command(
                         f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{os.path.relpath(file, self.project_location)}"
                     )
@@ -119,6 +119,7 @@ setuptools.setup(
                     f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
                 )
                 if watch:
+                    logger.info("You have watch activated. Your project will be automatically synchronised with databricks. Starting sync process:")
                     package_dirs = extract_python_package_dirs(self.project_location)
                     for package_dir in package_dirs:
                         python_files = extract_python_files_from_folder(package_dir)
@@ -127,7 +128,7 @@ setuptools.setup(
                             execute_shell_command(
                                 f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{os.path.relpath(file, self.project_location)}"
                             )
-                            logger.info(f"Sync {file}")
+                            logger.info(f"Finished sync of {file}")
                         execute_for_each_multithreaded(python_files, helper)
         except Exception as e:
             raise Exception(
@@ -139,23 +140,21 @@ setuptools.setup(
         install_cmd = _add_index_urls_to_cmd(install_cmd, self.index_urls)
         project_name = extract_project_name_from_wheel(self.wheel_file)
 
-        if modified_files:
-            logger.info("Changes are applied")
-        elif watch:
+        if watch:
             logger.info(
-                f"""You have watch activated. Your project will be automatically synchronised with databricks. Add following in one cell:
+                f"""Sync completed. To use your library in your databricks notebook & automatically apply local changes add following in one cell:
 %pip install --upgrade pip
 %pip install {install_cmd} --force-reinstall
 %pip uninstall -y {project_name}
 
-and then in new Python cell:
+and then in a new Python cell:
 %load_ext autoreload
 %autoreload 2
 import sys
 import os
 sys.path.append(os.path.abspath('{base_path}')""")
         else:
-            logger.info(f"""Install your library in your databricks notebook by running:
+            logger.info(f"""Uploaded your library to databricks. Install your library in your databricks notebook by running:
     %pip install --upgrade pip
     %pip install {install_cmd} --force-reinstall""")
 
