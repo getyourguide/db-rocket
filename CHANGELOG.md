@@ -1,5 +1,9 @@
 # Changelog db-rocket
 
+## Version 1.3.1
+
+- Adding Markdown documentation to package description
+
 ## Version 1.3.0
 
 - Remove `rocket trigger` CLI
