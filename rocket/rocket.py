@@ -110,7 +110,7 @@ setuptools.setup(
             if modified_files:
                 logger.info(f"Found changes in {modified_files}. Overwriting them.")
                 for file in modified_files:
-                    logger.info(f"Sync {file} with DBFS")
+                    logger.info(f"Sync {file}")
                     execute_shell_command(
                         f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{os.path.relpath(file, self.project_location)}"
                     )
@@ -118,18 +118,17 @@ setuptools.setup(
                 execute_shell_command(
                     f"databricks fs cp --overwrite {self.wheel_path} {self.dbfs_folder}/{self.wheel_file}"
                 )
-                package_dirs = extract_python_package_dirs(self.project_location)
-                for package_dir in package_dirs:
-                    python_files = extract_python_files_from_folder(package_dir)
+                if watch:
+                    package_dirs = extract_python_package_dirs(self.project_location)
+                    for package_dir in package_dirs:
+                        python_files = extract_python_files_from_folder(package_dir)
 
-                    def helper(file):
-                        logger.info(f"Sync {file} with DBFS")
-                        execute_shell_command(
-                            f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{os.path.relpath(file, self.project_location)}"
-                        )
-                    execute_for_each_multithreaded(python_files, helper)
-
-
+                        def helper(file):
+                            execute_shell_command(
+                                f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{os.path.relpath(file, self.project_location)}"
+                            )
+                            logger.info(f"Sync {file}")
+                        execute_for_each_multithreaded(python_files, helper)
         except Exception as e:
             raise Exception(
                 f"Error while copying files to databricks, is your databricks token set and valid? Try to generate a new token and update existing one with `databricks configure --token`. Error details: {e}"
