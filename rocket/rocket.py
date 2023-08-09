@@ -134,9 +134,9 @@ setuptools.setup(
         project_name = extract_project_name_from_wheel(self.wheel_file)
 
         if modified_files:
-            print("Changes are applied")
+            logger.info("Changes are applied")
         elif watch:
-            print(
+            logger.info(
                 f"""You have watch activated. Your project will be automatically synchronised with databricks. Add following in one cell:
 %pip install --upgrade pip
 %pip install {install_cmd} --force-reinstall
@@ -149,7 +149,7 @@ import sys
 import os
 sys.path.append(os.path.abspath('{base_path}')""")
         else:
-            print(f"""Install your library in your databricks notebook by running:
+            logger.info(f"""Install your library in your databricks notebook by running:
     %pip install --upgrade pip
     %pip install {install_cmd} --force-reinstall""")
 
@@ -157,7 +157,7 @@ sys.path.append(os.path.abspath('{base_path}')""")
         """
         builds a library with that project
         """
-        print("We are now building your Python repo as a library...")
+        logger.info("We are now building your Python repo as a library...")
 
         # cleans up dist folder from previous build
         dist_location = f"{self.project_location}/dist"
