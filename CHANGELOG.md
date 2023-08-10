@@ -1,5 +1,9 @@
 # Changelog db-rocket
 
+## Version 1.3.3
+
+- Fix watch stopping due to maximum recursion
+
 ## Version 1.3.2
 
 - Refine prints to be more clear
