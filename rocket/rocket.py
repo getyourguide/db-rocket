@@ -94,7 +94,8 @@ setuptools.setup(
             observer.join()
             if watcher.modified_files:
                 self._deploy(watch=watch, modified_files=watcher.modified_files)
-            return self.launch(project_location=project_location, dbfs_path=dbfs_path, watch=True, _deploy=False)
+            return execute_shell_command(
+                f'rocket launch --project_location={project_location} --watch={True} --dbfs_path={dbfs_path} _deploy=False')
 
     def _build_and_deploy(self, watch, modified_files=None):
         self._build()
