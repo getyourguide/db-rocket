@@ -1,5 +1,18 @@
 # Changelog db-rocket
 
+## Version 1.3.5
+
+- Replace self-calling CLI with while loop
+- 
+
+## Version 1.3.4
+
+- Simplify setup by using `pip install -e`
+
+## Version 1.3.3
+
+- Fix watch stopping due to maximum recursion
+
 ## Version 1.3.2
 
 - Refine prints to be more clear
