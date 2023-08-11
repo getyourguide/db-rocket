@@ -15,3 +15,6 @@ class Watcher(FileSystemEventHandler):
         if os.path.splitext(event.src_path)[1] == '.py':
             self.modified_files.append(event.src_path)
             self.observer.stop()
+
+    def reset_modified(self):
+        self.modified_files = []
