@@ -6,7 +6,7 @@ with open("README.md", encoding="utf8") as f:
 
 setuptools.setup(
     name="databricks-rocket",
-    version="1.3.5",
+    version="1.3.6",
     author="GetYourGuide",
     author_email="engineering.data-products@getyourguide.com",
     description="Keep your local python scripts installed and in sync with a databricks notebook. Shortens the feedback loop to develop projects using a hybrid enviroment",

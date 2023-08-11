@@ -78,13 +78,10 @@ setuptools.setup(
         project_directory = project_directory[:-1]
 
         self.dbfs_folder = dbfs_path + project_directory
+        self._build_and_deploy(watch)
 
         if not watch:
-            self._build_and_deploy(watch)
             return
-
-        if _deploy:
-            self._deploy(watch)
 
         if watch:
             observer = Observer()
@@ -94,7 +91,6 @@ setuptools.setup(
             while True:
                 time.sleep(2)
                 if watcher.modified_files:
-                    observer.join()
                     self._deploy(watch=watch, modified_files=watcher.modified_files)
                     watcher.reset_modified()
 
@@ -116,6 +112,7 @@ setuptools.setup(
             )
 
         base_path = self.dbfs_folder.replace("dbfs:/", "/dbfs/")
+        project_name = os.path.basename(os.path.abspath(self.project_location))
         if not watch:
             install_cmd = f'{base_path}/{self.wheel_file}'
             install_cmd = _add_index_urls_to_cmd(install_cmd, self.index_urls)
@@ -133,19 +130,20 @@ setuptools.setup(
             for file in modified_files:
                 logger.info(f"Finished sync of {file}")
                 execute_shell_command(
-                    f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{os.path.relpath(file, self.project_location)}"
+                    f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{project_name}/{os.path.relpath(file, self.project_location)}"
                 )
             return
 
         logger.info(
             "You have watch activated. Your project will be automatically synchronised with databricks. Starting sync process:")
+        execute_shell_command(f"databricks fs mkdirs {self.dbfs_folder}/{project_name}")
         package_dirs = extract_python_package_dirs(self.project_location)
         for package_dir in package_dirs:
             python_files = extract_python_files_from_folder(package_dir)
 
             def helper(file):
                 execute_shell_command(
-                    f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{os.path.relpath(file, self.project_location)}"
+                    f"databricks fs cp --recursive --overwrite {file} {self.dbfs_folder}/{project_name}/{os.path.relpath(file, self.project_location)}"
                 )
                 logger.info(f"Finished sync of {file}")
 
@@ -156,14 +154,16 @@ setuptools.setup(
             project_file = "pyproject.toml"
 
         execute_shell_command(
-            f"databricks fs cp --overwrite {self.project_location}/{project_file} {self.dbfs_folder}/"
+            f"databricks fs cp --overwrite {self.project_location}/{project_file} {self.dbfs_folder}/{project_name}"
         )
         logger.info(f"Finished sync of {self.project_location}/{project_file}")
 
+        install_cmd = f"-e {base_path}/{project_name}"
+        install_cmd = _add_index_urls_to_cmd(install_cmd, self.index_urls)
         logger.info(
             f"""Sync completed. To use your library in your databricks notebook & automatically apply local changes add following in one cell:
 %pip install --upgrade pip
-%pip install -e {base_path}
+%pip install {install_cmd}
 
 and then in a new Python cell:
 %load_ext autoreload
