@@ -1,5 +1,9 @@
 # Changelog db-rocket
 
+## Version 2.0.0
+- Simplify code structure
+- 
+
 ## Version 1.3.6
 
 - Fix bug of updates not getting detected
