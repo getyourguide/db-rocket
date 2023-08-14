@@ -37,7 +37,7 @@ export DATABRICKS_TOKEN="mydatabrickstoken"
 If your project is not a pip package already you have to turn it into one. You can use dbrocket to do that.
 
 ```sh
-dbrocket setup
+rocket setup
 ```
 
 Will create a setup.py for you.
@@ -45,7 +45,7 @@ Will create a setup.py for you.
 ## Using db-rocket
 
 ```sh
-dbrocket launch
+rocket launch
 ```
 
 The command returns the exact command you have to perform in your notebook next.

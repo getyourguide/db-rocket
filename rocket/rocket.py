@@ -6,8 +6,12 @@ import fire
 
 from rocket.file_watcher import FileWatcher
 from rocket.logger import logger
-from rocket.utils import execute_shell_command, extract_python_package_dirs, extract_python_files_from_folder, \
-    execute_for_each_multithreaded
+from rocket.utils import (
+    execute_shell_command,
+    extract_python_package_dirs,
+    extract_python_files_from_folder,
+    execute_for_each_multithreaded,
+)
 
 
 class Rocket:
@@ -45,10 +49,10 @@ setuptools.setup(
         logger.info("Setup.py file created, feel free to modify it with your needs.")
 
     def launch(
-            self,
-            project_location: str = ".",
-            dbfs_path: Optional[str] = None,
-            watch=True,
+        self,
+        project_location: str = ".",
+        dbfs_path: Optional[str] = None,
+        watch=True,
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -64,9 +68,7 @@ setuptools.setup(
             raise Exception("`dbfs_path` must start with dbfs:/")
 
         try:
-            execute_shell_command(
-                f"databricks fs ls dbfs:/"
-            )
+            execute_shell_command(f"databricks fs ls dbfs:/")
         except Exception as e:
             raise Exception(
                 f"Error accessing DBFS via databricks-cli. Please check if your databricks token is set and valid? Try to generate a new token and update existing one with `databricks configure --token`. Error details: {e}"
@@ -79,16 +81,27 @@ setuptools.setup(
 
         self._build_and_deploy(watch, project_location, dbfs_path)
         if watch:
-            watcher = FileWatcher(project_location,
-                                  lambda x: self._build_and_deploy(watch=watch, modified_files=watcher.modified_files,
-                                                                   dbfs_path=dbfs_path,
-                                                                   project_location=project_location))
+            watcher = FileWatcher(
+                project_location,
+                lambda x: self._build_and_deploy(
+                    watch=watch,
+                    modified_files=watcher.modified_files,
+                    dbfs_path=dbfs_path,
+                    project_location=project_location,
+                ),
+            )
             watcher.start()
 
-    def _build_and_deploy(self, watch, project_location, dbfs_path, modified_files=None):
+    def _build_and_deploy(
+        self, watch, project_location, dbfs_path, modified_files=None
+    ):
         if modified_files:
             logger.info(f"Found changes in {modified_files}. Overwriting them.")
-            self._deploy(file_paths=modified_files, dbfs_path=dbfs_path, project_location=project_location)
+            self._deploy(
+                file_paths=modified_files,
+                dbfs_path=dbfs_path,
+                project_location=project_location,
+            )
             return
 
         if watch:
@@ -104,7 +117,9 @@ setuptools.setup(
                     files.append(f"{project_location}/{project_file}")
 
             if os.path.exists(f"{project_location}/pyproject.toml"):
-                execute_shell_command("poetry export -f requirements.txt --with-credentials --without-hashes --output requirements.txt")
+                execute_shell_command(
+                    "poetry export -f requirements.txt --with-credentials --without-hashes --output requirements.txt"
+                )
 
             dependency_file_exist = False
             dependency_files = ["requirements.in", "requirements.txt"]
@@ -117,8 +132,14 @@ setuptools.setup(
                     uploaded_dependency_file = dependency_file
                     dependency_file_exist = True
                     with open(dependency_file_path) as f:
-                        index_urls = [line.strip() for line in f.readlines() if "index-url" in line]
-            self._deploy(file_paths=files, dbfs_path=dbfs_path, project_location=project_location)
+                        index_urls = [
+                            line.strip()
+                            for line in f.readlines()
+                            if "index-url" in line
+                        ]
+            self._deploy(
+                file_paths=files, dbfs_path=dbfs_path, project_location=project_location
+            )
 
             install_path = f'{dbfs_path.replace("dbfs:/", "/dbfs/")}'
             index_urls_options = " ".join(index_urls)
@@ -126,13 +147,13 @@ setuptools.setup(
             if dependency_file_exist:
                 logger.info(
                     f"""Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
-                %pip install --upgrade pip
-                %pip install {index_urls_options} -r {install_path}/{uploaded_dependency_file}
-                %pip install --no-deps -e {install_path}
+%pip install --upgrade pip
+%pip install {index_urls_options} -r {install_path}/{uploaded_dependency_file}
+%pip install --no-deps -e {install_path}
 
-                and following in a new Python cell:
-                %load_ext autoreload
-                %autoreload 2""")
+and following in a new Python cell:
+%load_ext autoreload
+%autoreload 2""")
             else:
                 logger.info(
                     f"""Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
@@ -141,11 +162,18 @@ setuptools.setup(
 
 and following in a new Python cell:
 %load_ext autoreload
-%autoreload 2""")
+%autoreload 2"""
+                )
         else:
-            logger.info("Watch is disabled. Building creating a python wheel from your project")
+            logger.info(
+                "Watch is disabled. Building creating a python wheel from your project"
+            )
             wheel_path, wheel_file = self.create_python_project_wheel(project_location)
-            self._deploy(file_paths=[wheel_path], dbfs_path=dbfs_path, project_location=project_location)
+            self._deploy(
+                file_paths=[wheel_path],
+                dbfs_path=dbfs_path,
+                project_location=project_location,
+            )
             install_path = f'{dbfs_path.replace("dbfs:/", "/dbfs/")}/{wheel_file}'
 
             dependency_files = ["requirements.in", "requirements.txt"]
@@ -154,19 +182,23 @@ and following in a new Python cell:
                 dependency_file_path = f"{project_location}/{dependency_file}"
                 if os.path.exists(dependency_file_path):
                     with open(dependency_file_path) as f:
-                        index_urls = [line.strip() for line in f.readlines() if "index-url" in line]
+                        index_urls = [
+                            line.strip()
+                            for line in f.readlines()
+                            if "index-url" in line
+                        ]
             index_urls_options = " ".join(index_urls)
 
-            logger.info(f"""Uploaded wheel to databricks. Install your library in your databricks notebook by running:
+            logger.info(
+                f"""Uploaded wheel to databricks. Install your library in your databricks notebook by running:
             %pip install --upgrade pip
-            %pip install {index_urls_options} {install_path} --force-reinstall""")
+            %pip install {index_urls_options} {install_path} --force-reinstall"""
+            )
 
     def _deploy(self, file_paths, dbfs_path, project_location):
         def helper(file):
             target_path = f"{dbfs_path}/{os.path.relpath(file, project_location)}"
-            execute_shell_command(
-                f"databricks fs cp --overwrite {file} {target_path}"
-            )
+            execute_shell_command(f"databricks fs cp --overwrite {file} {target_path}")
             logger.info(f"Uploaded {file} to {target_path}")
 
         execute_for_each_multithreaded(file_paths, lambda x: helper(x))
@@ -182,7 +214,9 @@ and following in a new Python cell:
             )
         elif os.path.exists(f"{project_location}/pyproject.toml"):
             logger.info("Found pyproject.toml. Building python library with poetry")
-            execute_shell_command(f"cd {project_location} ; poetry build --format wheel")
+            execute_shell_command(
+                f"cd {project_location} ; poetry build --format wheel"
+            )
         else:
             raise Exception(
                 "To be turned into a library your project has to contain a setup.py or pyproject.toml file"

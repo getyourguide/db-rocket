@@ -13,7 +13,7 @@ class FileWatcher:
         def on_modified(self, event):
             if event.is_directory:
                 return
-            if os.path.splitext(event.src_path)[1] == '.py':
+            if os.path.splitext(event.src_path)[1] == ".py":
                 self.watcher_instance.modified_files.append(event.src_path)
 
     def __init__(self, path_to_watch, callback, recursive=True):
@@ -25,7 +25,9 @@ class FileWatcher:
         self.handler = self._Handler(self)
 
     def start(self):
-        self.observer.schedule(self.handler, self.path_to_watch, recursive=self.recursive)
+        self.observer.schedule(
+            self.handler, self.path_to_watch, recursive=self.recursive
+        )
         self.observer.start()
         try:
             while True:
