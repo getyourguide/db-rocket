@@ -1,40 +1,40 @@
-## DB-Rocket
+## Databricks-Rocket
 
 <img src="https://user-images.githubusercontent.com/2252355/173396060-8ebb3a33-f389-421d-bea4-afc01a078307.svg" width="100" height="100">
 
 [![PyPI version](https://badge.fury.io/py/databricks-rocket.svg)](https://badge.fury.io/py/databricks-rocket)
 ![PyPI downloads](https://img.shields.io/pypi/dm/databricks-rocket)
 
-Keep your local python scripts installed and in sync with a databricks notebook.
-Every change on your local machine is automatically applied to the notebook.
-Shortens the feedback loop to develop git based projects.
-Removes the need to setup a local development environment.
+Databricks-Rocket (short db-rockets), keeps your local Python scripts installed and synchronized with a Databricks notebook. Every change on your local machine
+is automatically reflected in the notebook. This shortens the feedback loop for developing git-based projects and
+eliminates the need to set up a local development environment.
 
 ## Installation
 
-```sh
-pip3 install databricks-rocket
-```
+Install `databricks-rocket` using pip:
 
-Please sure your python interpreter is 3.7 or higher.
+```sh
+pip install databricks-rocket
+```
 
 ## Setup
 
-Make sure you have a token installed for databricks cli 
-([offical documentation](https://docs.databricks.com/dev-tools/cli/index.html)). 
-First, create a token for yourself on Databricks.
-Then set it up locally by running:
+Ensure you've created a personal access token in
+Databricks ([offical documentation](https://docs.databricks.com/dev-tools/cli/index.html)). Afterward, set up the
+Databricks CLI by executing:
 
 ```sh
 databricks configure --token
 ```
-Then, the databricks token must be exported in your environment.
+
+Alternatively, you can set the Databricks token and host in your environment variables:
 
 ```sh
+export DATABRICKS_HOST="mydatabrickshost"
 export DATABRICKS_TOKEN="mydatabrickstoken"
 ```
 
-If your project is not a pip package already you have to turn it into one. You can use dbrocket to do that.
+If your project isn't already a pip package, you'll need to convert it into one. Use dbrocket for this:
 
 ```sh
 rocket setup
@@ -42,27 +42,53 @@ rocket setup
 
 Will create a setup.py for you.
 
-## Using db-rocket
+## Usage
+
+### To Sync Your Project
+
+By default, `databricks-rocket` syncs your project to DBFS automatically. This allows you to update your code and have
+those changes reflected in your Databricks notebook without restarting the Python kernel. Simply execute:
 
 ```sh
 rocket launch
 ```
 
-The command returns the exact command you have to perform in your notebook next.
+You'll then receive the exact command to run in your notebook. Example:
+
+```sh
+stevenmi@MacBook db-rocket % rocket launch --watch=False
+>> Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
+>> %pip install --upgrade pip
+>> %pip install  -r /dbfs/temp/stevenmi/db-rocket/requirements.txt
+>> %pip install --no-deps -e /dbfs/temp/stevenmi/db-rocket
+
+and following in a new Python cell:
+>> %load_ext autoreload
+>> %autoreload 2
+```
+
+Finally, add the content in you databricks notebook:
+![imgs/img_2.png](imgs/img_2.png)
+
+### To Upload Your Python Package
+
+If you've disabled the watch feature, `databricks-rocket` will only upload your project as a wheel to DBFS:
+
+```sh
+rocket launch --watch=False
+```
 
 Example:
 
 ```sh
-We are now building your Python repo as a library...
-Done! in your notebook install the library by running:
-
-%pip install --upgrade pip
-%pip install /dbfs/temp/username/databricks_rocket-1.1.3-py3-none-any.whl --force-reinstall
+stevenmi@MacBook db-rocket % rocket launch --watch=False
+>> Watch is disabled. Building creating a python wheel from your project
+>> Found setup.py. Building python library
+>> Uploaded ./dist/databricks_rocket-2.0.0-py3-none-any.whl to dbfs:/temp/stevenmi/db-rocket/dist/databricks_rocket-2.0.0-py3-none-any.whl
+>> Uploaded wheel to databricks. Install your library in your databricks notebook by running:
+>> %pip install --upgrade pip
+>> %pip install  /dbfs/temp/stevenmi/db-rocket/databricks_rocket-2.0.0-py3-none-any.whl --force-reinstall
 ```
-
-Create a cell in a notebook and paste the content (example below).
-
-![img_1.png](img_1.png)
 
 ## Support
 

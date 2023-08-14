@@ -3,7 +3,6 @@ from typing import Optional
 
 import fire
 
-
 from rocket.file_watcher import FileWatcher
 from rocket.logger import logger
 from rocket.utils import (
@@ -153,7 +152,8 @@ setuptools.setup(
 
 and following in a new Python cell:
 %load_ext autoreload
-%autoreload 2""")
+%autoreload 2"""
+                )
             else:
                 logger.info(
                     f"""Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
@@ -188,11 +188,10 @@ and following in a new Python cell:
                             if "index-url" in line
                         ]
             index_urls_options = " ".join(index_urls)
-
             logger.info(
                 f"""Uploaded wheel to databricks. Install your library in your databricks notebook by running:
-            %pip install --upgrade pip
-            %pip install {index_urls_options} {install_path} --force-reinstall"""
+%pip install --upgrade pip
+%pip install {index_urls_options} {install_path} --force-reinstall"""
             )
 
     def _deploy(self, file_paths, dbfs_path, project_location):

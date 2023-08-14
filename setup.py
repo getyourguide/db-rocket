@@ -1,8 +1,11 @@
 import setuptools
 
 # load the README file and use it as the long_description for PyPI
-with open("README.md", encoding="utf8") as f:
-    readme = f.read()
+try:
+    with open("README.md", encoding="utf8") as f:
+        readme = f.read()
+except Exception as e:
+    readme = ""
 
 setuptools.setup(
     name="databricks-rocket",
