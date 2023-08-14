@@ -2,7 +2,7 @@
 
 ## Version 2.0.0
 - Simplify code structure
-- 
+- Make sync of project more smooth by using a mix of `-e` & installation of `requirements.txt`
 
 ## Version 1.3.6
 
