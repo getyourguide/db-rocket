@@ -1,9 +1,13 @@
 # Changelog db-rocket
 
+## Version 1.3.6
+
+- Fix bug of updates not getting detected
+- Put files into a project folder
+
 ## Version 1.3.5
 
 - Replace self-calling CLI with while loop
-- 
 
 ## Version 1.3.4
 
