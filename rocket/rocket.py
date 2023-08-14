@@ -104,7 +104,7 @@ setuptools.setup(
                     files.append(f"{project_location}/{project_file}")
 
             if os.path.exists(f"{project_location}/pyproject.toml"):
-                execute_shell_command("poetry export -f requirements.txt --without-hashes --output requirements.txt")
+                execute_shell_command("poetry export -f requirements.txt --with-credentials --without-hashes --output requirements.txt")
 
             dependency_file_exist = False
             dependency_files = ["requirements.in", "requirements.txt"]
