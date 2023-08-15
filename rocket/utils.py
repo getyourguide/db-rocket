@@ -53,10 +53,3 @@ def extract_python_files_from_folder(path):
                 py_files.append(os.path.join(root, file))
 
     return py_files
-
-
-def append_index_urls_to_cmd(cmd, index_urls):
-    if index_urls:
-        return f"{' '.join(index_urls)} {cmd}"
-    else:
-        return cmd

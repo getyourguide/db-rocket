@@ -201,7 +201,7 @@ and following in a new Python cell:
 
         execute_for_each_multithreaded(file_paths, lambda x: helper(x))
 
-    def create_python_project_wheel(self, project_location):
+    def _create_python_project_wheel(self, project_location):
         dist_location = f"{project_location}/dist"
         execute_shell_command(f"rm {dist_location}/* 2>/dev/null || true")
 
