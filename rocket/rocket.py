@@ -103,68 +103,7 @@ setuptools.setup(
             )
             return
 
-        if watch:
-            package_dirs = extract_python_package_dirs(project_location)
-            files = []
-            for package_dir in package_dirs:
-                for file in extract_python_files_from_folder(package_dir):
-                    files.append(file)
-
-            project_files = ["setup.py", "pyproject.toml"]
-            for project_file in project_files:
-                if os.path.exists(f"{project_location}/{project_file}"):
-                    files.append(f"{project_location}/{project_file}")
-
-            if os.path.exists(f"{project_location}/pyproject.toml"):
-                execute_shell_command(
-                    "poetry export -f requirements.txt --with-credentials --without-hashes --output requirements.txt"
-                )
-
-            dependency_file_exist = False
-            dependency_files = ["requirements.in", "requirements.txt"]
-            uploaded_dependency_file = ""
-            index_urls = []
-            for dependency_file in dependency_files:
-                dependency_file_path = f"{project_location}/{dependency_file}"
-                if os.path.exists(dependency_file_path):
-                    files.append(dependency_file_path)
-                    uploaded_dependency_file = dependency_file
-                    dependency_file_exist = True
-                    with open(dependency_file_path) as f:
-                        index_urls = [
-                            line.strip()
-                            for line in f.readlines()
-                            if "index-url" in line
-                        ]
-            self._deploy(
-                file_paths=files, dbfs_path=dbfs_path, project_location=project_location
-            )
-
-            install_path = f'{dbfs_path.replace("dbfs:/", "/dbfs/")}'
-            index_urls_options = " ".join(index_urls)
-
-            if dependency_file_exist:
-                logger.info(
-                    f"""Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
-%pip install --upgrade pip
-%pip install {index_urls_options} -r {install_path}/{uploaded_dependency_file}
-%pip install --no-deps -e {install_path}
-
-and following in a new Python cell:
-%load_ext autoreload
-%autoreload 2"""
-                )
-            else:
-                logger.info(
-                    f"""Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
-%pip install --upgrade pip
-%pip install -e {install_path}
-
-and following in a new Python cell:
-%load_ext autoreload
-%autoreload 2"""
-                )
-        else:
+        if not watch:
             logger.info(
                 "Watch is disabled. Building creating a python wheel from your project"
             )
@@ -190,8 +129,68 @@ and following in a new Python cell:
             index_urls_options = " ".join(index_urls)
             logger.info(
                 f"""Uploaded wheel to databricks. Install your library in your databricks notebook by running:
+            %pip install --upgrade pip
+            %pip install {index_urls_options} {install_path} --force-reinstall"""
+            )
+            return
+
+        package_dirs = extract_python_package_dirs(project_location)
+        files = []
+        for package_dir in package_dirs:
+            for file in extract_python_files_from_folder(package_dir):
+                files.append(file)
+
+        project_files = ["setup.py", "pyproject.toml"]
+        for project_file in project_files:
+            if os.path.exists(f"{project_location}/{project_file}"):
+                files.append(f"{project_location}/{project_file}")
+
+        if os.path.exists(f"{project_location}/pyproject.toml"):
+            execute_shell_command(
+                "poetry export -f requirements.txt --with-credentials --without-hashes --output requirements.txt"
+            )
+
+        dependency_file_exist = False
+        dependency_files = ["requirements.in", "requirements.txt"]
+        uploaded_dependency_file = ""
+        index_urls = []
+        for dependency_file in dependency_files:
+            dependency_file_path = f"{project_location}/{dependency_file}"
+            if os.path.exists(dependency_file_path):
+                files.append(dependency_file_path)
+                uploaded_dependency_file = dependency_file
+                dependency_file_exist = True
+                with open(dependency_file_path) as f:
+                    index_urls = [
+                        line.strip() for line in f.readlines() if "index-url" in line
+                    ]
+        self._deploy(
+            file_paths=files, dbfs_path=dbfs_path, project_location=project_location
+        )
+
+        install_path = f'{dbfs_path.replace("dbfs:/", "/dbfs/")}'
+        index_urls_options = " ".join(index_urls)
+
+        if dependency_file_exist:
+            logger.info(
+                f"""Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
 %pip install --upgrade pip
-%pip install {index_urls_options} {install_path} --force-reinstall"""
+%pip install {index_urls_options} -r {install_path}/{uploaded_dependency_file}
+%pip install --no-deps -e {install_path}
+
+and following in a new Python cell:
+%load_ext autoreload
+%autoreload 2"""
+            )
+        else:
+            logger.info(
+                f"""Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
+%pip install --upgrade pip
+%pip install -e {install_path}
+
+and following in a new Python cell:
+%load_ext autoreload
+%autoreload 2"""
             )
 
     def _deploy(self, file_paths, dbfs_path, project_location):
