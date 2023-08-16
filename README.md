@@ -64,6 +64,8 @@ Create a cell in a notebook and paste the content (example below).
 
 ![img_1.png](img_1.png)
 
+[This blog](https://www.getyourguide.careers/posts/open-sourcing-db-rocket-for-data-scientists) post also gives more details about the rationale around dbrocket.
+
 ## Support
 
 - Databricks: >=7
