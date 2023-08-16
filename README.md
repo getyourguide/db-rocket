@@ -104,6 +104,10 @@ stevenmi@MacBook db-rocket % rocket launch --watch=False
 
 Contributions are welcomed!
 
+## Blogposts
+
+- [DB Rocket 1.0](https://www.getyourguide.careers/posts/open-sourcing-db-rocket-for-data-scientists) post also gives more details about the rationale around dbrocket.
+
 # Security
 
 For security issues please contact [security@getyourguide.com](mailto:security@getyourguide.com).
