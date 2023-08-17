@@ -1,55 +1,30 @@
-import unittest
-
-from rocket.rocket import Rocket, _add_index_urls_to_cmd
+from rocket.rocket import Rocket
 
 
-def test_build_python(python_rocket: Rocket):
+def test_create_python_wheel_from_python_project_successful(rocket: Rocket, python_project_path: str):
     """
     Test if DB Rocket can build a python project
     """
-    python_rocket._build()
-    assert python_rocket.wheel_file
-    assert python_rocket.wheel_path
+    wheel_path, wheel_file = rocket._create_python_project_wheel(python_project_path)
+    assert wheel_file
+    assert wheel_path
 
 
-def test_build_poetry(poetry_rocket: Rocket):
+def test_create_python_wheel_from_poetry_project_successful(rocket: Rocket, poetry_project_path: str):
     """
     Test if DB Rocket can build a poetry project
     """
-    poetry_rocket._build()
-    assert poetry_rocket.wheel_file
-    assert poetry_rocket.wheel_path
+    wheel_path, wheel_file = rocket._create_python_project_wheel(poetry_project_path)
+    assert wheel_file
+    assert wheel_path
 
 
-def test_build_raises_error():
+def test_create_python_wheel_from_temp_folder_raises_exception(rocket: Rocket):
     """
     Test if DB Rocket will raise an error if project is not a supported project
     """
-    rocket = Rocket()
-    rocket.project_location = "/tmp"
-
     try:
-        rocket._build()
+        wheel_path, wheel_file = rocket._create_python_project_wheel("/tmp")
     except:
         assert True
 
-    assert not hasattr(rocket, "wheel_file")
-    assert not hasattr(rocket, "wheel_path")
-
-
-def test_add_index_urls_to_cmd():
-    dummy_cmd = "test_cmd"
-    dummy_index_urls = ["dummy_index"]
-
-    assert _add_index_urls_to_cmd(dummy_cmd, dummy_index_urls) == "dummy_index test_cmd"
-
-
-def test_add_index_urls_to_cmd_without_urls():
-    dummy_cmd = "test_cmd"
-    dummy_index_urls = []
-
-    assert _add_index_urls_to_cmd(dummy_cmd, dummy_index_urls) == "test_cmd"
-
-
-if __name__ == "__main__":
-    unittest.main()

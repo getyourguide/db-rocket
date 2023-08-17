@@ -1,12 +1,15 @@
 import setuptools
 
 # load the README file and use it as the long_description for PyPI
-with open("README.md", encoding="utf8") as f:
-    readme = f.read()
+try:
+    with open("README.md", encoding="utf8") as f:
+        readme = f.read()
+except Exception as e:
+    readme = ""
 
 setuptools.setup(
     name="databricks-rocket",
-    version="1.3.6",
+    version="2.0.0",
     author="GetYourGuide",
     author_email="engineering.data-products@getyourguide.com",
     description="Keep your local python scripts installed and in sync with a databricks notebook. Shortens the feedback loop to develop projects using a hybrid enviroment",
