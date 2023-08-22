@@ -107,7 +107,7 @@ setuptools.setup(
             logger.info(
                 "Watch is disabled. Building creating a python wheel from your project"
             )
-            wheel_path, wheel_file = self.create_python_project_wheel(project_location)
+            wheel_path, wheel_file = self._create_python_project_wheel(project_location)
             self._deploy(
                 file_paths=[wheel_path],
                 dbfs_path=dbfs_path,
