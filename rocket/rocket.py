@@ -140,7 +140,7 @@ setuptools.setup(
             for file in extract_python_files_from_folder(package_dir):
                 files.append(file)
 
-        project_files = ["setup.py", "pyproject.toml"]
+        project_files = ["setup.py", "pyproject.toml", "README.md"]
         for project_file in project_files:
             if os.path.exists(f"{project_location}/{project_file}"):
                 files.append(f"{project_location}/{project_file}")
