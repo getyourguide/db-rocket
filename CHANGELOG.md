@@ -1,5 +1,8 @@
 # Changelog db-rocket
 
+## Version 2.0.1
+- fix function not found error
+
 ## Version 2.0.0
 - Simplify code structure
 - Make sync of project more smooth by using a mix of `-e` & installation of `requirements.txt`
