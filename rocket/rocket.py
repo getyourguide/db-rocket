@@ -48,10 +48,10 @@ setuptools.setup(
         logger.info("Setup.py file created, feel free to modify it with your needs.")
 
     def launch(
-        self,
-        project_location: str = ".",
-        dbfs_path: Optional[str] = None,
-        watch=True,
+            self,
+            project_location: str = ".",
+            dbfs_path: Optional[str] = None,
+            watch=True,
     ):
         """
         Entrypoint of the application, triggers a build and deploy
@@ -75,8 +75,9 @@ setuptools.setup(
 
         if not dbfs_path:
             dbfs_path = f"dbfs:/temp/{os.environ['USER']}"
-        project_name = os.path.abspath(project_location).split("/")[-1]
-        dbfs_path = f"{dbfs_path}/{project_name}"
+        if watch:
+            project_name = os.path.abspath(project_location).split("/")[-1]
+            dbfs_path = f"{dbfs_path}/{project_name}"
 
         self._build_and_deploy(watch, project_location, dbfs_path)
         if watch:
@@ -92,7 +93,7 @@ setuptools.setup(
             watcher.start()
 
     def _build_and_deploy(
-        self, watch, project_location, dbfs_path, modified_files=None
+            self, watch, project_location, dbfs_path, modified_files=None
     ):
         if modified_files:
             logger.info(f"Found changes in {modified_files}. Overwriting them.")
@@ -111,7 +112,7 @@ setuptools.setup(
             self._deploy(
                 file_paths=[wheel_path],
                 dbfs_path=dbfs_path,
-                project_location=project_location,
+                project_location=os.path.dirname(wheel_path),
             )
             install_path = f'{dbfs_path.replace("dbfs:/", "/dbfs/")}/{wheel_file}'
 
@@ -127,11 +128,9 @@ setuptools.setup(
                             if "index-url" in line
                         ]
             index_urls_options = " ".join(index_urls)
-            logger.info(
-                f"""Uploaded wheel to databricks. Install your library in your databricks notebook by running:
-            %pip install --upgrade pip
-            %pip install {index_urls_options} {install_path} --force-reinstall"""
-            )
+            logger.info(f"""Uploaded wheel to databricks. Install your library in your databricks notebook by running:
+%pip install --upgrade pip
+%pip install {index_urls_options} {install_path} --force-reinstall""")
             return
 
         package_dirs = extract_python_package_dirs(project_location)
