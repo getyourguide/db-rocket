@@ -1,0 +1,21 @@
+name: Publish python poetry package
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and publish to pypi
+        shell: bash
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
+          poetry build
+          echo "Publishing now..."
+          poetry publish -u "__token__" --password "$PYPI_TOKEN" || true
