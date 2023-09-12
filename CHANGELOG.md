@@ -1,5 +1,8 @@
 # Changelog db-rocket
 
+## Version 2.0.2
+- fix wheel uploading to root dbfs path
+
 ## Version 2.0.1
 - fix function not found error
 
