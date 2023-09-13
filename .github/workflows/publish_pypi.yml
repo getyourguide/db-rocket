@@ -18,4 +18,4 @@ jobs:
           poetry config virtualenvs.create false
           poetry build
           echo "Publishing now..."
-          poetry publish -u "__token__" --password $"PYPI_DB_ROCKET" || true
+          poetry publish -u "__token__" --password $PYPI_DB_ROCKET || true
