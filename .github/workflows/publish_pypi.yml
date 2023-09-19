@@ -18,3 +18,4 @@ jobs:
           python3 -m build --no-isolation
           echo "Build successfull, uploading now..."
           python3 -m twine upload dist/* -u TOKEN -p "$PYPI_DB_ROCKET"
+          echo "Upload successfull!"
