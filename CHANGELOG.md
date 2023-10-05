@@ -1,5 +1,8 @@
 # Changelog db-rocket
 
+## Version 2.0.3
+- give all commands in single line
+
 ## Version 2.0.2
 - fix wheel uploading to root dbfs path
 
