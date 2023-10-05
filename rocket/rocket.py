@@ -187,7 +187,6 @@ and following in a new Python cell:
 %pip install --upgrade pip
 %pip install -e {install_path}
 
-and following in a new Python cell:
 %load_ext autoreload
 %autoreload 2"""
             )
