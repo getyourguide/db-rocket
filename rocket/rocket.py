@@ -176,6 +176,7 @@ setuptools.setup(
 %pip install --upgrade pip
 %pip install {index_urls_options} -r {install_path}/{uploaded_dependency_file}
 %pip install --no-deps -e {install_path}
+dbutils.library.restartPython()
 
 and following in a new Python cell:
 %load_ext autoreload
