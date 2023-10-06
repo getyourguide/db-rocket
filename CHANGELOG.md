@@ -1,5 +1,8 @@
 # Changelog db-rocket
 
+## Version 2.0.3
+- Add instruction to restart Python with dbutils (needed for newer Databricks runtimes)
+
 ## Version 2.0.2
 - fix wheel uploading to root dbfs path
 
