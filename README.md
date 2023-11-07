@@ -90,6 +90,11 @@ stevenmi@MacBook db-rocket % rocket launch --watch=False
 >> %pip install  /dbfs/temp/stevenmi/db-rocket/databricks_rocket-2.0.0-py3-none-any.whl --force-reinstall
 ```
 
+## Blogposts
+
+- [DBrocket 2.0](https://www.getyourguide.careers/posts/improving-data-science-productivity-with-db-rocket-2-0): A summary of the big improvements we made to the tool in the new release.
+- [DB Rocket 1.0](https://www.getyourguide.careers/posts/open-sourcing-db-rocket-for-data-scientists) post also gives more details about the rationale around dbrocket.
+
 ## Support
 
 - Databricks: >=7
@@ -104,9 +109,6 @@ stevenmi@MacBook db-rocket % rocket launch --watch=False
 
 Contributions are welcomed!
 
-## Blogposts
-
-- [DB Rocket 1.0](https://www.getyourguide.careers/posts/open-sourcing-db-rocket-for-data-scientists) post also gives more details about the rationale around dbrocket.
 
 # Security
 
