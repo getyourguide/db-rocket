@@ -26,7 +26,7 @@ class Rocket:
         Initialize the application.
         """
         if os.path.exists("setup.py") or os.path.exists(f"pyproject.toml"):
-            logger.info("Packaing file already exists so no need to create a new one")
+            logger.info("Packaging file already exists so no need to create a new one")
             return
 
         content = """
