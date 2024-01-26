@@ -1,5 +1,6 @@
 import os
-from typing import Optional, List
+import glob
+from typing import Optional, List, Union
 
 import fire
 
@@ -51,13 +52,15 @@ setuptools.setup(
             self,
             project_location: str = ".",
             dbfs_path: Optional[str] = None,
-            watch: bool = True
+            watch: bool = True,
+            glob_path: Optional[Union[str, List[str]]] = None
     ) -> None:
         """
         Entrypoint of the application, triggers a build and deploy
         :param project_location: path to project code, default: `"."`
         :param dbfs_path: path where the wheel will be stored, ex: dbfs:/tmp/myteam/myproject
         :param watch: Set to false if you don't want to automatically sync your files
+        :param glob_path: glob string or list of strings for additional files to deploy, e.g. "*.json"
         :return:
         """
         if os.getenv("DATABRICKS_TOKEN") is None:
@@ -79,7 +82,7 @@ setuptools.setup(
             project_name = os.path.abspath(project_location).split("/")[-1]
             dbfs_path = f"{dbfs_path}/{project_name}"
 
-        self._build_and_deploy(watch, project_location, dbfs_path)
+        self._build_and_deploy(watch=watch, project_location=project_location, dbfs_path=dbfs_path, glob_path=glob_path)
         if watch:
             watcher = FileWatcher(
                 project_location,
@@ -88,6 +91,7 @@ setuptools.setup(
                     modified_files=watcher.modified_files,
                     dbfs_path=dbfs_path,
                     project_location=project_location,
+                    glob_path=glob_path
                 ),
             )
             watcher.start()
@@ -97,7 +101,8 @@ setuptools.setup(
             watch: bool,
             project_location: str,
             dbfs_path: str,
-            modified_files: Optional[List[str]] = None
+            modified_files: Optional[List[str]] = None,
+            glob_path: Optional[Union[str, List[str]]] = None
     ) -> None:
         if modified_files:
             logger.info(f"Found changes in {modified_files}. Overwriting them.")
@@ -142,6 +147,12 @@ setuptools.setup(
         for package_dir in package_dirs:
             for file in extract_python_files_from_folder(package_dir):
                 files.append(file)
+
+        if isinstance(glob_path, str):
+            files.extend(glob.glob(os.path.join(project_location, glob_path)))
+        elif isinstance(glob_path, list):
+            for path in glob_path:
+                files.extend(glob.glob(os.path.join(project_location, path)))
 
         project_files = ["setup.py", "pyproject.toml"]
         for project_file in project_files:
