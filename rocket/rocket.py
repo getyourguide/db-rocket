@@ -11,6 +11,7 @@ from rocket.utils import (
     extract_python_package_dirs,
     extract_python_files_from_folder,
     execute_for_each_multithreaded,
+    gather_glob_paths,
 )
 
 
@@ -82,7 +83,13 @@ setuptools.setup(
             project_name = os.path.abspath(project_location).split("/")[-1]
             dbfs_path = f"{dbfs_path}/{project_name}"
 
-        self._build_and_deploy(watch=watch, project_location=project_location, dbfs_path=dbfs_path, glob_path=glob_path)
+        glob_paths = []
+        if isinstance(glob_path, str):
+            glob_paths = [os.path.join(project_location, glob_path)]
+        elif isinstance(glob_path, list):
+            glob_paths = [os.path.join(project_location, path) for path in glob_path]
+
+        self._build_and_deploy(watch=watch, project_location=project_location, dbfs_path=dbfs_path, glob_paths=glob_paths)
         if watch:
             watcher = FileWatcher(
                 project_location,
@@ -91,8 +98,9 @@ setuptools.setup(
                     modified_files=watcher.modified_files,
                     dbfs_path=dbfs_path,
                     project_location=project_location,
-                    glob_path=glob_path
+                    glob_paths=glob_path
                 ),
+                glob_paths=glob_paths,
             )
             watcher.start()
 
@@ -102,7 +110,7 @@ setuptools.setup(
             project_location: str,
             dbfs_path: str,
             modified_files: Optional[List[str]] = None,
-            glob_path: Optional[Union[str, List[str]]] = None
+            glob_paths: Optional[List[str]] = None
     ) -> None:
         if modified_files:
             logger.info(f"Found changes in {modified_files}. Overwriting them.")
@@ -147,11 +155,8 @@ setuptools.setup(
         for package_dir in package_dirs:
             files.update(extract_python_files_from_folder(package_dir))
 
-        if isinstance(glob_path, str):
-            files.update(glob.glob(os.path.join(project_location, glob_path)))
-        elif isinstance(glob_path, list):
-            for path in glob_path:
-                files.update(glob.glob(os.path.join(project_location, path)))
+        if glob_paths is not None:
+            files.update(gather_glob_paths(glob_paths))
 
         project_files = ["setup.py", "pyproject.toml"]
         for project_file in project_files:
