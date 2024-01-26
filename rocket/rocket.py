@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Optional, List
 
 import fire
 
@@ -51,8 +51,8 @@ setuptools.setup(
             self,
             project_location: str = ".",
             dbfs_path: Optional[str] = None,
-            watch=True,
-    ):
+            watch: bool = True
+    ) -> None:
         """
         Entrypoint of the application, triggers a build and deploy
         :param project_location: path to project code, default: `"."`
@@ -93,8 +93,12 @@ setuptools.setup(
             watcher.start()
 
     def _build_and_deploy(
-            self, watch, project_location, dbfs_path, modified_files=None
-    ):
+            self,
+            watch: bool,
+            project_location: str,
+            dbfs_path: str,
+            modified_files: Optional[List[str]] = None
+    ) -> None:
         if modified_files:
             logger.info(f"Found changes in {modified_files}. Overwriting them.")
             self._deploy(
@@ -193,15 +197,20 @@ and following in a new Python cell:
 %autoreload 2"""
             )
 
-    def _deploy(self, file_paths, dbfs_path, project_location):
-        def helper(file):
+    def _deploy(
+            self,
+            file_paths: List[str],
+            dbfs_path: str,
+            project_location: str
+    ) -> None:
+        def helper(file: str) -> None:
             target_path = f"{dbfs_path}/{os.path.relpath(file, project_location)}"
             execute_shell_command(f"databricks fs cp --overwrite {file} {target_path}")
             logger.info(f"Uploaded {file} to {target_path}")
 
         execute_for_each_multithreaded(file_paths, lambda x: helper(x))
 
-    def _create_python_project_wheel(self, project_location):
+    def _create_python_project_wheel(self, project_location: str) -> (str, str):
         dist_location = f"{project_location}/dist"
         execute_shell_command(f"rm {dist_location}/* 2>/dev/null || true")
 
