@@ -55,7 +55,7 @@ setuptools.setup(
     ):
         """
         Entrypoint of the application, triggers a build and deploy
-        :param project_location:
+        :param project_location: path to project code, default: `"."`
         :param dbfs_path: path where the wheel will be stored, ex: dbfs:/tmp/myteam/myproject
         :param watch: Set to false if you don't want to automatically sync your files
         :return:
