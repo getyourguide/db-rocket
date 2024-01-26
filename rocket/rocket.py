@@ -143,21 +143,20 @@ setuptools.setup(
             return
 
         package_dirs = extract_python_package_dirs(project_location)
-        files = []
+        files = set()
         for package_dir in package_dirs:
-            for file in extract_python_files_from_folder(package_dir):
-                files.append(file)
+            files.update(extract_python_files_from_folder(package_dir))
 
         if isinstance(glob_path, str):
-            files.extend(glob.glob(os.path.join(project_location, glob_path)))
+            files.update(glob.glob(os.path.join(project_location, glob_path)))
         elif isinstance(glob_path, list):
             for path in glob_path:
-                files.extend(glob.glob(os.path.join(project_location, path)))
+                files.update(glob.glob(os.path.join(project_location, path)))
 
         project_files = ["setup.py", "pyproject.toml"]
         for project_file in project_files:
             if os.path.exists(f"{project_location}/{project_file}"):
-                files.append(f"{project_location}/{project_file}")
+                files.add(f"{project_location}/{project_file}")
 
         if os.path.exists(f"{project_location}/pyproject.toml"):
             execute_shell_command(
@@ -171,7 +170,7 @@ setuptools.setup(
         for dependency_file in dependency_files:
             dependency_file_path = f"{project_location}/{dependency_file}"
             if os.path.exists(dependency_file_path):
-                files.append(dependency_file_path)
+                files.add(dependency_file_path)
                 uploaded_dependency_file = dependency_file
                 dependency_file_exist = True
                 with open(dependency_file_path) as f:
@@ -179,7 +178,7 @@ setuptools.setup(
                         line.strip() for line in f.readlines() if "index-url" in line
                     ]
         self._deploy(
-            file_paths=files, dbfs_path=dbfs_path, project_location=project_location
+            file_paths=list(files), dbfs_path=dbfs_path, project_location=project_location
         )
 
         install_path = f'{dbfs_path.replace("dbfs:/", "/dbfs/")}'
