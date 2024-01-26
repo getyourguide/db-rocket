@@ -216,7 +216,7 @@ and following in a new Python cell:
     ) -> None:
         def helper(file: str) -> None:
             target_path = f"{dbfs_path}/{os.path.relpath(file, project_location)}"
-            execute_shell_command(f"databricks fs cp --overwrite {file} {target_path}")
+            execute_shell_command(f"databricks fs cp --recursive --overwrite {file} {target_path}")
             logger.info(f"Uploaded {file} to {target_path}")
 
         execute_for_each_multithreaded(file_paths, lambda x: helper(x))
