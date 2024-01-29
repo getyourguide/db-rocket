@@ -1,7 +1,9 @@
 import concurrent.futures
+import glob
 import os
 import subprocess
 
+from typing import List, Set
 from rocket.logger import logger
 
 
@@ -53,3 +55,10 @@ def extract_python_files_from_folder(path):
                 py_files.append(os.path.join(root, file))
 
     return py_files
+
+
+def gather_glob_paths(glob_paths: List[str]) -> Set[str]:
+    _unique_paths = set()
+    for glob_path in glob_paths:
+        _unique_paths.update(glob.glob(glob_path))
+    return _unique_paths

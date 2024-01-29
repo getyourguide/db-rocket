@@ -70,6 +70,17 @@ and following in a new Python cell:
 Finally, add the content in you databricks notebook:
 ![imgs/img_2.png](imgs/img_2.png)
 
+#### Include non-python files
+Upload all root level json files:
+```shell
+rocket launch --glob_path="*,json"
+```
+On top also upload all env files:
+```shell
+rocket launch --glob_path="[\"*.json\", \".env*\"]"
+```
+When specifying lists, be mindful about the formatting of the parameter string.
+
 ### To Upload Your Python Package
 
 If you've disabled the watch feature, `databricks-rocket` will only upload your project as a wheel to DBFS:
