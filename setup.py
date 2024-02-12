@@ -17,7 +17,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/getyourguide/db-rocket",
     packages=setuptools.find_packages(),
-    install_requires=["fire", "watchdog~=2.1.9", "build", "databricks_cli"],
+    install_requires=["fire", "watchdog>=2.1.9,<4.1.0", "build", "databricks_cli"],
     entry_points={
         "console_scripts": ["rocket=rocket.rocket:main", "dbrocket=rocket.rocket:main"]
     },
