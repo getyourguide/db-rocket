@@ -158,7 +158,7 @@ setuptools.setup(
         if glob_paths is not None:
             files.update(gather_glob_paths(glob_paths))
 
-        project_files = ["setup.py", "pyproject.toml"]
+        project_files = ["setup.py", "pyproject.toml", "README.md"]
         for project_file in project_files:
             if os.path.exists(f"{project_location}/{project_file}"):
                 files.add(f"{project_location}/{project_file}")
