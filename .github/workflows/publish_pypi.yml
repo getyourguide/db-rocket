@@ -1,8 +1,9 @@
 name: Publish python poetry package
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
+  # Sync pypi releases with releases drafted by release-please
+  release:
+    types:
+      - published
 
 jobs:
   build:
