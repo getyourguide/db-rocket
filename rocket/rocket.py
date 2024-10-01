@@ -220,6 +220,8 @@ and following in a new Python cell:
     ) -> None:
         def helper(file: str) -> None:
             target_path = f"{dbfs_path}/{os.path.relpath(file, project_location)}"
+            target_dir = "/".join(target_path.split("/")[:-1])
+            execute_shell_command(f"databricks fs mkdirs {target_dir}")
             execute_shell_command(f"databricks fs cp --recursive --overwrite {file} {target_path}")
             logger.info(f"Uploaded {file} to {target_path}")
 

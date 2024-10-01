@@ -1,6 +1,9 @@
 # Changelog db-rocket
 
 ## Version 2.1.0
+- Create directories if they don't exist. In the newer version of the Databricks CLI, using cp doesn't automatically create directories.
+
+## Version 2.1.0
 - New paramter for ``rocket launch --glob_path=<...>``, which allows to specify a list of globs for files to deploy during launch. 
 
 ## Version 2.0.4
