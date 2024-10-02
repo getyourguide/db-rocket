@@ -1,5 +1,8 @@
 # Changelog db-rocket
 
+## Version 2.1.1
+- Add `use_volumes` and `dst_path` arguments to support uploading to Unity Catalog Volumes.
+
 ## Version 2.1.0
 - New paramter for ``rocket launch --glob_path=<...>``, which allows to specify a list of globs for files to deploy during launch. 
 
