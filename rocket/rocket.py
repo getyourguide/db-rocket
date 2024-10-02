@@ -299,7 +299,7 @@ and following in a new Python cell:
 
     def get_volumes_path(self, path: Optional[str]) -> str:
         if path and not path.startswith("/Volumes"):
-            raise Exception("`volumes_path` must start with /Volumes")
+            raise Exception("`use_volumes` is true. `dst_path` must start with /Volumes")
         return path or f"/Volumes/main/data_products/volume/db_rocket/{os.environ['USER']}"
 
     def get_install_path(self, db_path):
