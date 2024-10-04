@@ -111,6 +111,7 @@ stevenmi@MacBook db-rocket % rocket launch --watch=False
 - Databricks: >=7
 - Python: >=3.7
 - Tested on Platform: Linux, MacOs. Windows will probably not work but contributions are welcomed!
+- Supports uploading to Unity Catalog Volumes starting from version 3.0.0. Note that the underlying dependency, `databricks-sdk`, is still in beta. We do not recommend using UC Volumes in production.
 
 ## Acknowledgments
 

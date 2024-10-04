@@ -293,8 +293,10 @@ and following in a new Python cell:
         return wheel_path, wheel_file
 
     def get_dbfs_path(self, path: Optional[str]) -> str:
-        if path and not self.is_dbfs(path):
-            raise Exception("`dbfs_path` must start with dbfs:/")
+        if path:
+            logger.warning("The `dbfs_path` parameter is planned for deprecation. Please use the `dst_path` parameter instead.")
+            if not self.is_dbfs(path):
+                raise Exception("`dbfs_path` must start with dbfs:/")
         return path or f"dbfs:/temp/{os.environ['USER']}"
 
     def get_volumes_path(self, path: Optional[str]) -> str:
