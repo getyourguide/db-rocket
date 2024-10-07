@@ -3,6 +3,7 @@ from typing import Optional, List, Union
 
 import fire
 
+from databricks.sdk import WorkspaceClient
 from rocket.file_watcher import FileWatcher
 from rocket.logger import logger
 from rocket.utils import (
@@ -69,16 +70,26 @@ setuptools.setup(
         """
         if os.getenv("DATABRICKS_TOKEN") is None:
             raise Exception("DATABRICKS_TOKEN must be set for db-rocket to work")
-        try:
-            execute_shell_command(f"databricks fs ls dbfs:/")
-        except Exception as e:
-            raise Exception(
-                f"Error accessing DBFS via databricks-cli. Please check if your databricks token is set and valid? Try to generate a new token and update existing one with `databricks configure --token`. Error details: {e}"
-            )
 
+        base_dbfs_access_error_message = ("Please check if your databricks token is set and valid? "
+                                          "Try to generate a new token and update existing one with "
+                                          "`databricks configure --token`.")
         if use_volumes:
+            try:
+                workspace_client = WorkspaceClient()
+                workspace_client.dbutils.fs.ls("dbfs:/")
+            except Exception as e:
+                raise Exception(
+                    f"Could not access dbfs using databricks SDK. {base_dbfs_access_error_message} Error details: {e}"
+                )
             db_path = self.get_volumes_path(dst_path)
         else:
+            try:
+                execute_shell_command(f"databricks fs ls dbfs:/")
+            except Exception as e:
+                raise Exception(
+                    f"Error accessing DBFS via databricks-cli. {base_dbfs_access_error_message} Error details: {e}"
+                )
             path_to_use = dst_path if dst_path else dbfs_path
             db_path = self.get_dbfs_path(path_to_use)
 
@@ -224,7 +235,6 @@ and following in a new Python cell:
         if self.is_dbfs(db_path):
             self._deploy_dbfs(file_paths, db_path, project_location)
         else:
-            from databricks.sdk import WorkspaceClient
             w = WorkspaceClient()
             self._deploy_volumes(file_paths, db_path, project_location, w)
 
