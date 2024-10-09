@@ -206,7 +206,7 @@ setuptools.setup(
         if not self.is_dbfs(db_path):
             # The install path is supposed to get added to sys.path, but this doesn't work when using volumes with
             #  tropic 3.5 (running databricks 15.4)...so, add it to sys.path manually
-            extra_watch_command = f"import sys; sys.path.append('{install_path}')\n"
+            extra_watch_command = f"import sys; sys.path.append('{install_path}')"
 
         if dependency_file_exist:
             logger.info(
@@ -215,10 +215,11 @@ setuptools.setup(
 %pip install {index_urls_options} -r {install_path}/{uploaded_dependency_file}
 %pip install --no-deps -e {install_path}
 dbutils.library.restartPython()
-{extra_watch_command}
+
 and following in a new Python cell:
 %load_ext autoreload
-%autoreload 2"""
+%autoreload 2
+{extra_watch_command}"""
             )
         else:
             logger.info(
