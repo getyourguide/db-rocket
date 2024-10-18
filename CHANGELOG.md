@@ -1,5 +1,8 @@
 # Changelog db-rocket
 
+## Version 3.0.2
+- Add databricks cli configuration check
+
 ## Version 3.0.1
 - Add workaround for making --watch command work with --use-volumes
 
