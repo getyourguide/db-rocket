@@ -68,10 +68,15 @@ setuptools.setup(
         :param dst_path: Destination path to store the files. Support both dbfs:/ and /Volumes. Ideally, we should use dst_path and deprecate dbfs_path.
         :return:
         """
+
+        home = os.environ['HOME']
+        if not os.path.exists(f"{home}/.databrickscfg"):
+            raise Exception("Databricks cli not configured. Run `databricks configure --token`.")
+
         if os.getenv("DATABRICKS_TOKEN") is None:
             raise Exception("DATABRICKS_TOKEN must be set for db-rocket to work")
 
-        base_dbfs_access_error_message = ("Please check if your databricks token is set and valid? "
+        base_dbfs_access_error_message = ("Is your databricks token is set and valid? "
                                           "Try to generate a new token and update existing one with "
                                           "`databricks configure --token`.")
         if use_volumes:
