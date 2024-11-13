@@ -73,8 +73,8 @@ setuptools.setup(
         if not os.path.exists(f"{home}/.databrickscfg"):
             raise Exception("Databricks cli not configured. Run `databricks configure --token`.")
 
-        if os.getenv("DATABRICKS_TOKEN") is None:
-            raise Exception("DATABRICKS_TOKEN must be set for db-rocket to work")
+        if os.getenv("DATABRICKS_TOKEN"):
+            print("Note: DATABRICKS_TOKEN is set, it could override the token in ~/.databrickscfg and cause errors.")
 
         base_dbfs_access_error_message = ("Is your databricks token is set and valid? "
                                           "Try to generate a new token and update existing one with "
