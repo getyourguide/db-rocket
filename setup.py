@@ -9,7 +9,7 @@ except Exception as e:
 
 setuptools.setup(
     name="databricks-rocket",
-    version="3.0.3",
+    version="3.0.4",
     author="GetYourGuide",
     author_email="engineering.data-products@getyourguide.com",
     description="Keep your local python scripts installed and in sync with a databricks notebook. Shortens the feedback loop to develop projects using a hybrid enviroment",
@@ -17,7 +17,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/getyourguide/db-rocket",
     packages=setuptools.find_packages(),
-    install_requires=["fire", "watchdog~=2.1.9", "build", "databricks_cli", "databricks-sdk==0.33.0"],
+    install_requires=["fire", "watchdog~=2.1.9", "build", "databricks_cli", "databricks-sdk"],
     entry_points={
         "console_scripts": ["rocket=rocket.rocket:main", "dbrocket=rocket.rocket:main"]
     },
