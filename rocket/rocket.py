@@ -70,9 +70,6 @@ setuptools.setup(
         """
 
         home = os.environ['HOME']
-        if not os.path.exists(f"{home}/.databrickscfg"):
-            raise Exception("Databricks cli not configured. Run `databricks configure --token`.")
-
         if os.getenv("DATABRICKS_TOKEN"):
             print("Note: DATABRICKS_TOKEN is set, it could override the token in ~/.databrickscfg and cause errors.")
 
