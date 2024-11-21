@@ -1,4 +1,9 @@
 # Changelog db-rocket
+## Version 3.0.5
+- Change poetry export command to not include extra index url + credentials
+
+## Version 3.0.4
+- Remove hard version requirements on databricks sdk 
 
 ## Version 3.0.3
 - Add warning when DATABRICKS_TOKEN is set rather than failing when its not set. The bulk of our use-cases rely on the token being set via databricks configure command. The token via environment variable is only used for CI and we should treat as an edge case.
