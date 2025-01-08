@@ -1,5 +1,8 @@
 # Changelog db-rocket
 
+## Version 3.0.6
+- Create folder before copying file
+
 ## Version 3.0.5
 - Revert enforcing the creation of .databrickscfg file
 

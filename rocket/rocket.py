@@ -254,6 +254,8 @@ and following in a new Python cell:
     ):
         def helper(file: str) -> None:
             target_path = f"{db_path}/{os.path.relpath(file, project_location)}"
+            target_folder = os.path.dirname(target_path)
+            execute_shell_command(f"databricks fs mkdirs {target_folder}")
             execute_shell_command(f"databricks fs cp --recursive --overwrite {file} {target_path}")
             logger.info(f"Uploaded {file} to {target_path}")
 
