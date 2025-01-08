@@ -11,3 +11,4 @@ SecretStorage
 readme-renderer
 twine
 databricks-sdk==0.33.0
+wheel
