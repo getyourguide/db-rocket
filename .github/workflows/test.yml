@@ -2,10 +2,14 @@ name: Tests
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
   pull_request:
-    branches: [ "main",  "master" ]
+    branches: ["main", "master"]
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}${{ github.ref_name != github.event.repository.default_branch && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 
 jobs:
   test:
@@ -17,7 +21,7 @@ jobs:
         with:
           python-version: 3.10.*
       - name: Install dependencies
-        run: | 
+        run: |
           pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run a multi-line script
