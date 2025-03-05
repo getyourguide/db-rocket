@@ -216,12 +216,15 @@ setuptools.setup(
         if dependency_file_exist:
             logger.info(
                 f"""Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
-%pip install --upgrade pip
-%pip install {index_urls_options} -r {install_path}/{uploaded_dependency_file}
-%pip install --no-deps -e {install_path}
+%sh
+pip install uv
+uv pip install {index_urls_options} -r {install_path}/{uploaded_dependency_file}
+uv pip install --no-deps -e {install_path}
+
+and in a new Python cell:
 dbutils.library.restartPython()
 
-and following in a new Python cell:
+and and in one more Python cell:
 %load_ext autoreload
 %autoreload 2
 {extra_watch_command}"""
