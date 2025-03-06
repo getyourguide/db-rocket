@@ -1,5 +1,11 @@
 # Changelog db-rocket
 
+## Version 3.1.0
+- Use uv when installing packages
+
+## Version 3.0.6
+- Warn when failing to create requirements.txt file with poetry instead of raising an error
+
 ## Version 3.0.6
 - Create folder before copying file
 
