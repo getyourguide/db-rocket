@@ -232,8 +232,9 @@ and and in one more Python cell:
         else:
             logger.info(
                 f"""Watch activated. Uploaded your project to databricks. Install your project in your databricks notebook by running:
-%pip install --upgrade pip
-%pip install -e {install_path}
+%sh
+pip install uv
+uv pip install -e {install_path}
 
 and following in a new Python cell:
 %load_ext autoreload
