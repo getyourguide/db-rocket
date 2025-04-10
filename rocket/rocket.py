@@ -68,30 +68,23 @@ setuptools.setup(
         :param dst_path: Destination path to store the files. Support both dbfs:/ and /Volumes. Ideally, we should use dst_path and deprecate dbfs_path.
         :return:
         """
-
         home = os.environ['HOME']
         if os.getenv("DATABRICKS_TOKEN"):
             print("Note: DATABRICKS_TOKEN is set, it could override the token in ~/.databrickscfg and cause errors.")
 
-        base_dbfs_access_error_message = ("Otherwise, is your databricks token is set and valid? "
-                                          "Try to generate a new token and update existing one with "
-                                          "`databricks configure --token`.")
+        dbfs_access_error_message = f"Please make sure databricks-cli is installed (https://docs.databricks.com/aws/en/dev-tools/cli/install#homebrew-install) or re-create your databricks token by running `databricks auth login --host DATABRICKS_HOST --profile default`"
         if use_volumes:
             try:
                 workspace_client = WorkspaceClient()
                 workspace_client.dbutils.fs.ls("dbfs:/")
             except Exception as e:
-                raise Exception(
-                    f"Could not access dbfs using databricks SDK. {base_dbfs_access_error_message} Error details: {e}"
-                )
+                raise Exception(f"Could not access DBFS due to {e}. {dbfs_access_error_message}")
             db_path = self.get_volumes_path(dst_path)
         else:
             try:
                 execute_shell_command(f"databricks fs ls dbfs:/")
             except Exception as e:
-                raise Exception(
-                    f"Error accessing DBFS. Please make sure databricks-cli is installed (https://docs.databricks.com/aws/en/dev-tools/cli/install#homebrew-install). {base_dbfs_access_error_message} Error details: {e}"
-                )
+                raise Exception(f"Could not access DBFS due to {e}. {dbfs_access_error_message}")
             path_to_use = dst_path if dst_path else dbfs_path
             db_path = self.get_dbfs_path(path_to_use)
 
