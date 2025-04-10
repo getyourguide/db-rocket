@@ -72,7 +72,7 @@ setuptools.setup(
         if os.getenv("DATABRICKS_TOKEN"):
             print("Note: DATABRICKS_TOKEN is set, it could override the token in ~/.databrickscfg and cause errors.")
 
-        dbfs_access_error_message = f"Please make sure databricks-cli is installed (https://docs.databricks.com/aws/en/dev-tools/cli/install#homebrew-install) and/or re-create your databricks token by running `databricks auth login --host DATABRICKS_HOST --profile default`"
+        dbfs_access_error_message = f"Please make sure databricks-cli is installed (https://docs.databricks.com/aws/en/dev-tools/cli/install#homebrew-install) and/or re-create your databricks token by running `databricks auth login --host DATABRICKS_HOST --profile DEFAULT`"
         if use_volumes:
             try:
                 workspace_client = WorkspaceClient()
