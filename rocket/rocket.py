@@ -73,7 +73,7 @@ setuptools.setup(
         if os.getenv("DATABRICKS_TOKEN"):
             print("Note: DATABRICKS_TOKEN is set, it could override the token in ~/.databrickscfg and cause errors.")
 
-        base_dbfs_access_error_message = ("Is your databricks token is set and valid? "
+        base_dbfs_access_error_message = ("Otherwise, is your databricks token is set and valid? "
                                           "Try to generate a new token and update existing one with "
                                           "`databricks configure --token`.")
         if use_volumes:
@@ -90,7 +90,7 @@ setuptools.setup(
                 execute_shell_command(f"databricks fs ls dbfs:/")
             except Exception as e:
                 raise Exception(
-                    f"Error accessing DBFS via databricks-cli. {base_dbfs_access_error_message} Error details: {e}"
+                    f"Error accessing DBFS. Please make sure databricks-cli is installed (https://docs.databricks.com/aws/en/dev-tools/cli/install#homebrew-install). {base_dbfs_access_error_message} Error details: {e}"
                 )
             path_to_use = dst_path if dst_path else dbfs_path
             db_path = self.get_dbfs_path(path_to_use)
