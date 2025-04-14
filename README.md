@@ -1,3 +1,5 @@
+# NOTE: We are in the progress of deprecating db-rocket for databricks native tooling. 
+
 ## Databricks-Rocket
 
 <img src="https://user-images.githubusercontent.com/2252355/173396060-8ebb3a33-f389-421d-bea4-afc01a078307.svg" width="100" height="100">
