@@ -1,4 +1,4 @@
-# 02-05-2025 We recommend using the Databricks CLI https://docs.databricks.com/aws/en/dev-tools/cli/
+# 02-05-2025 Deprecated. We recommend using the Databricks CLI https://docs.databricks.com/aws/en/dev-tools/cli/
 
 ## Databricks-Rocket
 
